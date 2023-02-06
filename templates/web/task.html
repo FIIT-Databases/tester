@@ -1,0 +1,21 @@
+{% extends '_layout/base.html' %}
+{% load i18n %}
+{% load bootstrap5 %}
+
+{% block content %}
+	<h1>{% trans "New test" %}</h1>
+	<form method="post">
+		{% bootstrap_messages %}
+		<div class="row justify-content-center">
+			<div class="col-lg-6">
+				{% csrf_token %}
+				{% bootstrap_form form %}
+				{% buttons %}
+					<div class="text-center">
+						<button type="submit" class="btn btn-primary btn-lg">{% translate "Submit" %}</button>
+					</div>
+				{% endbuttons %}
+			</div>
+		</div>
+	</form>
+{% endblock %}
