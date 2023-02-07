@@ -10,7 +10,6 @@ from typing import Optional
 from uuid import UUID
 
 import docker
-import requests
 from django.conf import settings
 from django.utils.translation import gettext as _
 from docker.models.containers import Container
@@ -73,7 +72,8 @@ def basic(task_id: UUID, public_only: bool) -> Optional[Task]:
         logging.info("Executing scenario %s for the task %s", scenario.pk, task.pk)
 
         if os.getenv('DOCKER'):
-            url = f"http://{container.attrs['NetworkSettings']['Networks'][settings.DBS_DOCKER_NETWORK]['IPAddress']}:8000{scenario.url}"
+            container_ip = container.attrs['NetworkSettings']['Networks'][settings.DBS_DOCKER_NETWORK]['IPAddress']
+            url = f"http://{container_ip}:8000{scenario.url}"
         else:
             url = f"http://127.0.0.1:9050{scenario.url}"
 
