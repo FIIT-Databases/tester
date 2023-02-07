@@ -3,8 +3,9 @@
 ## 1.0.0 : TBD
 
 - **Added**: LDAP auth
+- **Added**: Ability to create scenarios with HTTP body
 - **Changed**: Alpine Linux 1.17 container
-- **Changed**: Docker build process
+- **Changed**: Docker containers runtime
 - **Changed**: Removed CAPTCHA
 
 ## 0.4.1 : 2022-05-17

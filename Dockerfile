@@ -44,6 +44,7 @@ COPY --from=builder /usr/src/app /usr/src/app
 # Prepare virtual env
 ENV VIRTUAL_ENV=/opt/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV DOCKER=1
 
 # Configuration
 RUN mkdir /var/run/gunicorn

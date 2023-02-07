@@ -28,8 +28,16 @@
 							</span>
 						</li>
 						<li class="list-group-item">
-							<strong>{% trans "Base URL" %}: </strong>
-							{{ task.base_url }}
+							<strong>{% trans "User" %}: </strong>
+							{{ task.user.username }}
+						</li>
+						<li class="list-group-item">
+							<strong>{% trans "Image" %}: </strong>
+							{{ task.image }}
+						</li>
+						<li class="list-group-item">
+							<strong>{% trans "Created at" %}: </strong>
+							{{ task.created_at }}
 						</li>
 						{% if task.message %}
 							<li class="list-group-item">
@@ -42,13 +50,20 @@
 			</div>
 		</div>
 		<div class="col-lg-7">
+			<div class="card mb-4">
+				<div class="card-header">
+					{% trans "Container output" %}
+				</div>
+				<div class="card-body">
+					<pre>{{ task.output }}</pre>
+				</div>
+			</div>
 		</div>
 	</div>
 
 	{% if task.status == task.Status.DONE %}
 		<h2>{% trans "Scenarios" %}</h2>
-		{% for task_record in  task.records.all %}
-			<hr>
+		{% for task_record in task.records.all %}
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="card mb-4">

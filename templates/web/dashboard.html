@@ -22,23 +22,41 @@
 	<div class="row">
 
 		<div class="col-lg-6">
-			<div class="card mb-4">
-				<div class="card-header">
-					{% trans "Performed tests" %}
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="card mb-4">
+						<div class="card-header">
+							{% trans "Performed tests" %}
+						</div>
+						<div class="card-body text-center">
+							<span class="fs-1">{{ total_tests }}</span>
+						</div>
+					</div>
 				</div>
-				<div class="card-body text-center">
-					<span class="fs-1">{{ total_tests }}</span>
+				<div class="col-lg-6">
+					<div class="card mb-4">
+						<div class="card-header">
+							{% trans "Jobs in queue" %}
+						</div>
+						<div class="card-body text-center">
+							<span class="fs-1">{{ jobs_in_queue }}</span>
+						</div>
+					</div>
 				</div>
 			</div>
 
-			<div class="card mb-4">
-				<div class="card-header">
-					{% trans "Top users" %}
-				</div>
-				<div class="card-body">
-					<ol>
-						<li>xdubec</li>
-					</ol>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="card mb-4">
+						<div class="card-header">
+							{% trans "Top users" %}
+						</div>
+						<div class="card-body">
+							<ol>
+								<li>xdubec</li>
+							</ol>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

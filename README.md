@@ -20,7 +20,7 @@ Server started on port 8000.
 
 ### From source
 
-We use [poetry](https://python-poetry.org/) for dependency management and [PostgreSQL](https://www.postgresql.org/) 13
+We use [poetry](https://python-poetry.org/) for dependency management and [PostgreSQL](https://www.postgresql.org/) 15
 (10+ should be compatible) as a data storage (acquisition files are stored on the filesystem, not in the database).
 To set up instance with demo database follow these simple steps:
 
@@ -29,7 +29,7 @@ To set up instance with demo database follow these simple steps:
 3. Install dependencies `poetry install`
 4. Create `.env` file according `.env.example`
 5. Execute migrations `python manage.py migrate`
-6. Create superuser using `python manage.py createsuperuser`
+6. Create superuser using `python manage.py createsuperuser` or setup LDAP in `auth_sources` table
 
 ## Database
 

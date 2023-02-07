@@ -34,7 +34,8 @@ class Task(BaseModel):
         verbose_name=_('Docker Image'),
         max_length=255
     )
-    message = models.TextField(null=True)
+    message = models.TextField(null=True, editable=False)
+    output = models.TextField(null=True, editable=False)
 
     def get_absolute_url(self):
         return reverse('task-detail', kwargs={'task_id': self.pk})

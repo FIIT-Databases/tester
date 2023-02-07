@@ -1,3 +1,4 @@
+import django_rq
 import pygal
 from django.db.models import Count
 from django.shortcuts import render
@@ -23,10 +24,13 @@ class Dashboard(View):
         for task_record in task_records:
             task_record_status.add(task_record['status'], task_record['count'])
 
+        queue = django_rq.get_queue('default')
+
         return render(request, 'web/dashboard.html', {
             'total_tests': Task.objects.filter(executor=Task.Executor.FORM).count(),
             'tasks_by_day': days.render_data_uri(),
-            'task_record_status': task_record_status.render_data_uri()
+            'task_record_status': task_record_status.render_data_uri(),
+            'jobs_in_queue': queue.count
         })
 
 

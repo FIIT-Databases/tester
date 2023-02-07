@@ -1,9 +1,11 @@
 import json
 import logging
+import os
 import subprocess
 import tempfile
 from difflib import HtmlDiff
 from json import JSONDecodeError
+from time import sleep
 from typing import Optional
 from uuid import UUID
 
@@ -12,7 +14,7 @@ import requests
 from django.conf import settings
 from django.utils.translation import gettext as _
 from docker.models.containers import Container
-from requests import HTTPError, Timeout
+from requests import HTTPError, Timeout, Session, Request
 from requests.exceptions import InvalidJSONError
 
 from apps.core.models import Task, TaskRecord
@@ -41,18 +43,27 @@ def basic(task_id: UUID, public_only: bool) -> Optional[Task]:
         return None
 
     client = docker.from_env()  # FIXME: asi tazko
-    container: Container = client.containers.run(
-        image=task.image,
-        detach=True,
-        environment={
+
+    params = {
+        'image': task.image,
+        'detach': True,
+        'environment': {
             'NAME': 'Arthur'
         },
-        name=task.id,
-        ports={
+        'name': task.id,
+        'privileged': False,
+        'network': settings.DBS_DOCKER_NETWORK
+    }
+
+    if not os.getenv('DOCKER'):
+        params['ports'] = {
             '8000/tcp': '9050'
-        },
-        privileged=False
-    )
+        }
+
+    container: Container = client.containers.run(**params)
+
+    sleep(3)
+    container.reload()
 
     conditions = {}
     if public_only:
@@ -61,14 +72,27 @@ def basic(task_id: UUID, public_only: bool) -> Optional[Task]:
     for scenario in task.assigment.scenarios.filter(**conditions):
         logging.info("Executing scenario %s for the task %s", scenario.pk, task.pk)
 
+        if os.getenv('DOCKER'):
+            url = f"http://{container.attrs['NetworkSettings']['Networks'][settings.DBS_DOCKER_NETWORK]['IPAddress']}:8000{scenario.url}"
+        else:
+            url = f"http://127.0.0.1:9050{scenario.url}"
+
         record = TaskRecord(
             task=task,
             scenario=scenario,
-            url=settings.DBS_TESTER_BASE_URL + scenario.url
+            url=url
         )
 
+        s = Session()
+        req = Request(
+            method=scenario.method,
+            url=record.url,
+        )
+        if scenario.body:
+            req.json = scenario.body
+
         try:
-            r = requests.get(record.url, timeout=settings.DBS_TESTER_TIMEOUT)
+            r = s.send(req.prepare(), timeout=settings.DBS_TESTER_TIMEOUT)
         except Timeout as e:
             record.status = TaskRecord.Status.TIMEOUT
             record.message = str(e)
@@ -138,11 +162,11 @@ def basic(task_id: UUID, public_only: bool) -> Optional[Task]:
         record.save()
 
     task.status = Task.Status.DONE
+    task.output = container.logs().decode()
     task.save()
 
     # Cleanup
     container.stop()
     container.remove()
-    client.images.get(task.image).remove()
 
     return task
