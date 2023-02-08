@@ -1,6 +1,8 @@
 import json
 import logging
 import os
+import random
+import string
 import subprocess
 import tempfile
 from difflib import HtmlDiff
@@ -11,6 +13,7 @@ from uuid import UUID
 
 import docker
 from django.conf import settings
+from django.db import connection
 from django.utils.translation import gettext as _
 from docker.models.containers import Container
 from requests import HTTPError, Timeout, Session, Request
@@ -41,13 +44,24 @@ def basic(task_id: UUID, public_only: bool) -> Optional[Task]:
         logging.warning("Task %s is already done! Skipping.", task.pk)
         return None
 
+    database = None
+    if task.assigment.database:
+        database = ''.join(random.choices(string.ascii_letters, k=10))
+        with connection.cursor() as cursor:
+            cursor.execute(f"CREATE DATABASE {database} TEMPLATE {task.assigment.database};")
+
     client = docker.from_env()  # FIXME: asi tazko
 
     params = {
         'image': task.image,
         'detach': True,
         'environment': {
-            'NAME': 'Arthur'
+            'NAME': 'Arthur',
+            'DATABASE_HOST': settings.DATABASES['default']['HOST'],
+            'DATABASE_PORT': settings.DATABASES['default']['PORT'],
+            'DATABASE_NAME': settings.DATABASES['default']['NAME'],
+            'DATABASE_USER': settings.DATABASES['default']['USER'],
+            'DATABASE_PASSWORD': settings.DATABASES['default']['PASSWORD'],
         },
         'name': task.id,
         'privileged': False,
@@ -168,5 +182,10 @@ def basic(task_id: UUID, public_only: bool) -> Optional[Task]:
     # Cleanup
     container.stop()
     container.remove()
+    if database:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f"DROP DATABASE {database};"
+            )
 
     return task

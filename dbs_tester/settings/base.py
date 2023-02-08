@@ -218,6 +218,10 @@ if os.getenv('SENTRY_DSN', False):
         before_send=before_send,
     )
 
+CRON_JOBS = {
+    'prune': '0,30 * * * *'
+}
+
 DBS_TESTER_TIMEOUT = 20
 DBS_TESTER_DIFF_THRESHOLD = 1024 * 512
 DBS_DOCKER_NETWORK = 'dbs'

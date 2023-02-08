@@ -4,6 +4,8 @@
 
 - **Added**: LDAP auth
 - **Added**: Ability to create scenarios with HTTP body
+- **Added**: CRON
+- **Added**: Database sandboxes
 - **Changed**: Alpine Linux 1.17 container
 - **Changed**: Docker containers runtime
 - **Changed**: Removed CAPTCHA

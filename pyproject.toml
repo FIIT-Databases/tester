@@ -19,6 +19,7 @@ Markdown = "^3.4.1"
 pygal = "^3.0.0"
 python-ldap = "^3.4.3"
 docker = "^6.0.1"
+python-crontab = "^2.7.1"
 
 
 [tool.poetry.dev-dependencies]
