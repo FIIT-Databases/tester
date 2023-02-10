@@ -26,7 +26,7 @@ class Dashboard(View):
 
         queue = django_rq.get_queue('default')
 
-        top_users = Task.objects.all().values('user__username').annotate(total=Count('id')).order_by('total')[:10]
+        top_users = Task.objects.all().values('user__username').annotate(total=Count('id')).order_by('-total')[:10]
 
         return render(request, 'web/dashboard.html', {
             'total_tests': Task.objects.filter(executor=Task.Executor.FORM).count(),
