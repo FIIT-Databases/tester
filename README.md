@@ -71,7 +71,7 @@ To set up instance with demo database follow these simple steps:
 
 This project requires PostgresSQL 10+ database server to run. Here is the EER diagram bellow.
 
-![](docs/eer.png)
+![](docs/eer.jpg)
 
 ---
 Made with ❤️ and ☕️ FIIT STU (c) 2022-2023
