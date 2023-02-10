@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1 : 2023-02-10
+
+- **Added**: Nice footer
+- **Fixed**: Top users order
+- **Fixed**: Version context processor
+
 ## 1.0.0 : 2023-02-10
 
 - **Added**: LDAP auth
