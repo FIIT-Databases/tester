@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/Sibyx/TesterDBS.git"
   },
-  "author": "Jakub Dubec <xdubec@stuba.sk>",
+  "author": "Jakub Dubec <jakub.dubec@stuba.sk>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Sibyx/TesterDBS/issues"

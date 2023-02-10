@@ -1,0 +1,18 @@
+[Unit]
+Description=DBS Tester
+Wants=network-online.target
+After=network-online.target docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop -t 5 dbs-tester
+ExecStartPre=-/usr/bin/docker rm dbs-tester
+ExecStartPre=-/usr/bin/docker pull ghcr.io/fiit-databases/tester:master
+ExecStart=/usr/bin/docker run -p 9200:9000 -v /var/run/docker.sock:/var/run/docker.sock -v ./logs:/var/log/ --env BASE_URL= --env ALLOWED_HOSTS= --env DATABASE_HOST= --env DATABASE_NAME= --env DATABASE_PASSWORD= --env DATABASE_PORT= --env DATABASE_USER= --env DJANGO_SETTINGS_MODULE=dbs_tester.settings.production --env REDIS_HOST= --env SECRET_KEY= --env GITHUB_TOKEN= --env GITHUB_USER= --name dbs-tester --network dbs --add-host=host.docker.internal:host-gateway ghcr.io/fiit-databases/tester:master
+ExecStop=/usr/bin/docker stop -t 5 dbs-tester
+ExecStopPost=-/usr/bin/docker rm dbs-tester
+
+[Install]
+WantedBy=multi-user.target

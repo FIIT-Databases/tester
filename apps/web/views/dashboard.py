@@ -26,11 +26,14 @@ class Dashboard(View):
 
         queue = django_rq.get_queue('default')
 
+        top_users = Task.objects.all().values('user__username').annotate(total=Count('id')).order_by('total')[:10]
+
         return render(request, 'web/dashboard.html', {
             'total_tests': Task.objects.filter(executor=Task.Executor.FORM).count(),
             'tasks_by_day': days.render_data_uri(),
             'task_record_status': task_record_status.render_data_uri(),
-            'jobs_in_queue': queue.count
+            'jobs_in_queue': queue.count,
+            'top_users': top_users
         })
 
 

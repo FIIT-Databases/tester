@@ -198,6 +198,8 @@ RQ_EXCEPTION_HANDLERS = [
     'apps.core.jobs.exception_handler'
 ]
 
+RQ_SHOW_ADMIN_LINK = True
+
 # Sentry
 if os.getenv('SENTRY_DSN', False):
     def before_send(event, hint):
@@ -224,14 +226,10 @@ CRON_JOBS = {
 
 DBS_TESTER_TIMEOUT = 20
 DBS_TESTER_DIFF_THRESHOLD = 1024 * 512
-DBS_DOCKER_NETWORK = 'dbs'
+DBS_DOCKER_NETWORK = os.getenv('DBS_DOCKER_NETWORK', 'dbs')
 
 CSRF_TRUSTED_ORIGINS = [
-    'http://127.0.0.1:8000/',
-    'http://127.0.0.1/',
     'http://127.0.0.1:8000',
-    'http://62.197.233.248:9300',
-    'http://dbs-tester.vogsphere.sk'
 ]
 
 FORM_RENDERER = 'django.forms.renderers.TemplatesSetting'

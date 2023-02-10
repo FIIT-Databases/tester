@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 : TBD
+## 1.0.0 : 2023-02-10
 
 - **Added**: LDAP auth
 - **Added**: Ability to create scenarios with HTTP body
