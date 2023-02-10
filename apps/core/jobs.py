@@ -44,11 +44,13 @@ def basic(task_id: UUID, public_only: bool) -> Optional[Task]:
         logging.warning("Task %s is already done! Skipping.", task.pk)
         return None
 
-    database = None
-    if task.assigment.database:
-        database = ''.join(random.choices(string.ascii_letters, k=10))
-        with connection.cursor() as cursor:
-            cursor.execute(f"CREATE DATABASE {database} TEMPLATE {task.assigment.database};")
+    database_name = ''.join(random.choices(string.ascii_letters, k=10)).lower()
+    database_password = ''.join(random.choices(string.ascii_letters, k=10)).lower()
+
+    with connection.cursor() as cursor:
+        cursor.execute(f"CREATE DATABASE {database_name} TEMPLATE {task.assigment.database or 'template0'};")
+        cursor.execute(f"CREATE USER {database_name} WITH ENCRYPTED PASSWORD '{database_password}';")
+        cursor.execute(f"GRANT ALL PRIVILEGES ON DATABASE {database_name} TO {database_name};")
 
     client = docker.from_env()  # FIXME: asi tazko
 
@@ -59,13 +61,17 @@ def basic(task_id: UUID, public_only: bool) -> Optional[Task]:
             'NAME': 'Arthur',
             'DATABASE_HOST': settings.DATABASES['default']['HOST'],
             'DATABASE_PORT': settings.DATABASES['default']['PORT'],
-            'DATABASE_NAME': settings.DATABASES['default']['NAME'],
-            'DATABASE_USER': settings.DATABASES['default']['USER'],
-            'DATABASE_PASSWORD': settings.DATABASES['default']['PASSWORD'],
+            'DATABASE_NAME': database_name,
+            'DATABASE_USER': database_name,
+            'DATABASE_PASSWORD': database_password,
         },
         'name': task.id,
         'privileged': False,
-        'network': settings.DBS_DOCKER_NETWORK
+        'network': settings.DBS_DOCKER_NETWORK,
+        'extra_hosts': {
+            'host.docker.internal': 'host-gateway',
+            'docker.for.mac.localhost': 'host-gateway'
+        }
     }
 
     if not os.getenv('DOCKER'):
@@ -182,10 +188,8 @@ def basic(task_id: UUID, public_only: bool) -> Optional[Task]:
     # Cleanup
     container.stop()
     container.remove()
-    if database:
-        with connection.cursor() as cursor:
-            cursor.execute(
-                f"DROP DATABASE {database};"
-            )
+    with connection.cursor() as cursor:
+        cursor.execute(f"DROP DATABASE {database_name};")
+        cursor.execute(f"DROP USER {database_name};")
 
     return task

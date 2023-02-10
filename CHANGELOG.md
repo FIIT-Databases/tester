@@ -1,8 +1,9 @@
 # Changelog
 
-## 1.0.1 : 2023-02-10
+## 1.1.0 : 2023-02-10
 
 - **Added**: Nice footer
+- **Added**: Create sandbox database users
 - **Fixed**: Top users order
 - **Fixed**: Version context processor
 

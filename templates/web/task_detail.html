@@ -77,8 +77,8 @@
 									{{ task_record.pk }}
 								</li>
 								<li class="list-group-item">
-									<strong>{% trans "Scenario UUID" %}: </strong>
-									{{ task_record.scenario_id }}
+									<strong>{% trans "Scenario" %}: </strong>
+									{{ task_record.scenario.name }} ({{ task_record.scenario_id }})
 								</li>
 								<li class="list-group-item">
 									<strong>{% trans "Status" %}: </strong>
@@ -88,12 +88,14 @@
 								</li>
 								<li class="list-group-item">
 									<strong>{% trans "URL" %}: </strong>
-									<a href="{{ task_record.url }}" target="_blank">{{ task_record.url }}</a>
+									{{ task_record.url }}
 								</li>
-								<li class="list-group-item">
-									<strong>{% trans "Message" %}: </strong>
-									{{ task_record.message }}
-								</li>
+								{% if task_record.message %}
+									<li class="list-group-item">
+										<strong>{% trans "Message" %}: </strong>
+										{{ task_record.message }}
+									</li>
+								{% endif %}
 								<li class="list-group-item">
 									<strong>{% trans "Duration" %}: </strong>
 									{{ task_record.duration }}
