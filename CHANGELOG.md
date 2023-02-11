@@ -1,6 +1,10 @@
 # Changelog
 
-## 1.1.0 : 2023-02-10
+## 1.2.0 : 2023-02-11
+
+- **Added**: Status endpoint `GET /api/v1/status`
+
+## 1.1.0 : 2023-02-11
 
 - **Added**: Nice footer
 - **Added**: Create sandbox database users

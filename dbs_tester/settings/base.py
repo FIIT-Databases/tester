@@ -73,6 +73,7 @@ INSTALLED_APPS = [
 
     'apps.core',
     'apps.web',
+    'apps.api'
 ]
 
 MIDDLEWARE = [
@@ -218,11 +219,14 @@ if os.getenv('SENTRY_DSN', False):
         send_default_pii=True,
         request_bodies='always',
         before_send=before_send,
+        release=VERSION
     )
 
 CRON_JOBS = {
     'prune': '0,30 * * * *'
 }
+
+PAGINATION_DEFAULT_LIMIT = 10
 
 DBS_TESTER_TIMEOUT = 20
 DBS_TESTER_DIFF_THRESHOLD = 1024 * 512
