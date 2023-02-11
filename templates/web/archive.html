@@ -1,0 +1,27 @@
+{% extends '_layout/base.html' %}
+{% load i18n %}
+{% load bootstrap5 %}
+
+{% block content %}
+	<h1>{% trans "Archive" %}</h1>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<table
+					id="table"
+					data-toggle="table"
+					data-url="https://examples.wenzhixin.net.cn/examples/bootstrap_table/data"
+					data-height="400"
+					data-side-pagination="server"
+					data-pagination="true">
+				<thead>
+				<tr>
+					<th data-field="id">ID</th>
+					<th data-field="name">Item Name</th>
+					<th data-field="price">Item Price</th>
+				</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+{% endblock %}

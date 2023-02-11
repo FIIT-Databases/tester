@@ -7,7 +7,7 @@
 - **Fixed**: Top users order
 - **Fixed**: Version context processor
 
-## 1.0.0 : 2023-02-10
+## 1.0.0 : 2023-02-11
 
 - **Added**: LDAP auth
 - **Added**: Ability to create scenarios with HTTP body

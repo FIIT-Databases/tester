@@ -40,6 +40,9 @@ class Task(BaseModel):
     def get_absolute_url(self):
         return reverse('task-detail', kwargs={'task_id': self.pk})
 
+    def __str__(self):
+        return f"{self.assigment.name} - {self.user.username} ({self.id})"
+
 
 __all__ = [
     'Task'

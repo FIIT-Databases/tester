@@ -12,7 +12,7 @@ from apps.core.models import Task
 from apps.web.forms import TaskForm
 
 
-class TaskManagement(LoginRequiredMixin, CreateView):
+class CrateTaskView(LoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
     template_name = 'web/task.html'
@@ -28,6 +28,11 @@ class TaskManagement(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
+class TaskArchiveView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, 'web/archive.html')
+
+
 class TaskDetail(View):
     def get(self, request, task_id: UUID):
         try:
@@ -40,6 +45,6 @@ class TaskDetail(View):
 
 
 __all__ = [
-    'TaskManagement',
+    'CrateTaskView',
     'TaskDetail'
 ]
