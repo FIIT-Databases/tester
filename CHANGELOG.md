@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1 : 2023-02-11
+
+- **Fixed**: Requirements for container
+
 ## 1.2.0 : 2023-02-11
 
 - **Added**: Status endpoint `GET /api/v1/status`
