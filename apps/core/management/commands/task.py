@@ -30,7 +30,7 @@ class Command(BaseCommand):
             executor=Task.Executor.JOB
         )
 
-        task = jobs.basic(task_id=task.pk, public_only=False)
+        task = jobs.BasicJob.execute(task_id=task.pk, public_only=False)
         self.stdout.write(f"Result: {task.status}")
 
         self.stdout.write(f"Finished: {timezone.now().isoformat()}")

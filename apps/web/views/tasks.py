@@ -7,7 +7,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import CreateView
 
-from apps.core import jobs
+from apps.core.jobs import basic_job
 from apps.core.models import Task
 from apps.web.forms import TaskForm
 
@@ -24,7 +24,7 @@ class CrateTaskView(LoginRequiredMixin, CreateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        django_rq.enqueue(jobs.basic, self.object.pk, self.request.user.is_anonymous)
+        django_rq.enqueue(basic_job, self.object.pk, self.request.user.is_anonymous)
         return HttpResponseRedirect(self.get_success_url())
 
 

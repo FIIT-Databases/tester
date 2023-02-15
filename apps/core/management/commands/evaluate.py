@@ -61,7 +61,7 @@ class Command(BaseCommand):
             )
             self._students[student_email]['result'] = f"{settings.BASE_URL}{task.get_absolute_url()}"
             self.stdout.write(f"{student_email} ({task.id})")
-            task = jobs.basic(task_id=task.pk, public_only=False)
+            task = jobs.BasicJob.execute(task_id=task.pk, public_only=False)
             for record in task.records.all():
                 self._students[student_email][record.scenario.url] = record.status
 

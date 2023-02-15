@@ -223,7 +223,7 @@ if os.getenv('SENTRY_DSN', False):
     )
 
 CRON_JOBS = {
-    'prune': '0,30 * * * *'
+    'prune': '0 5 * * *'
 }
 
 PAGINATION_DEFAULT_LIMIT = 10

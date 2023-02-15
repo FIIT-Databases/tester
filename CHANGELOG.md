@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.0 : 2023-02-14
+
+- **Changed**: Phased job execution for better cleanups (implementation `BasicJob`)
+- **Changed**: Prune docker images once per day
+
 ## 1.2.1 : 2023-02-11
 
 - **Fixed**: Requirements for container
