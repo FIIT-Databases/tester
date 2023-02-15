@@ -162,7 +162,9 @@ class BasicJob:
                     expected.write(valid_response.encode())
 
                     record.diff_type = TaskRecord.DiffType.FILE
-                    sub = subprocess.run(['git', 'diff', '--no-index', expected.name, actual.name], stdout=subprocess.PIPE)
+                    sub = subprocess.run(
+                        ['git', 'diff', '--no-index', expected.name, actual.name], stdout=subprocess.PIPE
+                    )
                     record.diff = sub.stdout.decode()
 
                     expected.close()
