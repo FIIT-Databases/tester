@@ -7,7 +7,6 @@ import subprocess
 import tempfile
 from difflib import HtmlDiff
 from json import JSONDecodeError
-from time import sleep
 from typing import Optional
 from uuid import UUID
 
