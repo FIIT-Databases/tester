@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.1 : 2023-02-15
+
+- **Changed**: Sleep time after container start raised to 5 seconds
+
 ## 1.4.0 : 2023-02-15
 
 - **Added**: Usage of the `HTTPAdapter` with `Retry` object for better TCP retries
