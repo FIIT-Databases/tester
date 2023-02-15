@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0 : 2023-02-15
+
+- **Added**: Usage of the `HTTPAdapter` with `Retry` object for better TCP retries
+
 ## 1.3.0 : 2023-02-14
 
 - **Changed**: Phased job execution for better cleanups (implementation `BasicJob`)

@@ -17,7 +17,9 @@ from django.db import connection
 from django.utils.translation import gettext as _
 from docker.models.containers import Container
 from requests import HTTPError, Timeout, Session, Request
+from requests.adapters import HTTPAdapter
 from requests.exceptions import InvalidJSONError
+from urllib3 import Retry
 
 from apps.core.models import Task, TaskRecord
 
@@ -79,8 +81,6 @@ class BasicJob:
             }
 
         container: Container = client.containers.run(**params)
-
-        sleep(3)
         container.reload()
 
         conditions = {}
@@ -103,6 +103,10 @@ class BasicJob:
             )
 
             s = Session()
+            retry = Retry(connect=6, backoff_factor=2)
+            adapter = HTTPAdapter(max_retries=retry)
+            s.mount('http://', adapter)
+            s.mount('https://', adapter)
             req = Request(
                 method=scenario.method,
                 url=record.url,
