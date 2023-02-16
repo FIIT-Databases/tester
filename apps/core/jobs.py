@@ -194,6 +194,7 @@ class BasicJob:
         # Cleanup
         container.stop()
         container.remove()
+        client.images.get(self._task.image).remove()
 
     def cleanup(self):
         with connection.cursor() as cursor:

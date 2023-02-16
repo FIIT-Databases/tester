@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.2 : 2023-02-15
+
+- **Fixed**: Forcing Docker image cleanup
+
 ## 1.4.1 : 2023-02-15
 
 - **Changed**: Sleep time after container start raised to 5 seconds
