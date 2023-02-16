@@ -230,7 +230,6 @@ class BasicJob:
                     scope.set_extra("image", task.image)
                     sentry_sdk.capture_exception(e)
 
-
         job.cleanup()
 
         return task
