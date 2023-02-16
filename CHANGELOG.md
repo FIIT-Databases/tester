@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.4.2 : 2023-02-15
+## 1.4.2 : 2023-02-16
 
 - **Fixed**: Forcing Docker image cleanup
 
