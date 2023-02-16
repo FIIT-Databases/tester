@@ -12,9 +12,11 @@ from typing import Optional
 from uuid import UUID
 
 import docker
+import sentry_sdk
 from django.conf import settings
 from django.db import connection
 from django.utils.translation import gettext as _
+from docker.errors import DockerException
 from docker.models.containers import Container
 from requests import HTTPError, Timeout, Session, Request
 from requests.adapters import HTTPAdapter
@@ -221,6 +223,13 @@ class BasicJob:
             task.status = Task.Status.FAILED
             task.message = str(e)
             task.save()
+
+            if isinstance(e, DockerException):
+                with sentry_sdk.push_scope() as scope:
+                    scope.set_extra("task", task.pk)
+                    scope.set_extra("image", task.image)
+                    sentry_sdk.capture_exception(e)
+
 
         job.cleanup()
 

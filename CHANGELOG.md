@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.5.0 : 2023-02-16
+
+- **Added**: Capture Docker exceptions in Sentry
+- **Fixed**: Execute clean-up every 5 minutes
+
 ## 1.4.2 : 2023-02-16
 
 - **Fixed**: Forcing Docker image cleanup

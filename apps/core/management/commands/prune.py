@@ -12,7 +12,10 @@ class Command(BaseCommand):
 
         client = docker.from_env()
         client.containers.prune()
-        client.images.prune(filters={'dangling': False})
+        client.images.prune(filters={
+            'dangling': False,
+            'until': '5m'
+        })
 
         self.stdout.write(f"Finished: {timezone.now().isoformat()}")
         self.stdout.write(f"Duration: {timezone.now() - started_at}")
