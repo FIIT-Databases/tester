@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1 : 2023-02-17
+
+- **Fixed**: [Support for uppercase docker image name](https://github.com/FIIT-Databases/tester/issues/1)
+
 ## 1.5.0 : 2023-02-16
 
 - **Added**: Capture Docker exceptions in Sentry
