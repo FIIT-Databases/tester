@@ -72,6 +72,7 @@ class EvaluationResult(View):
                 'surname': task.additional_information['surname'],
                 'seminar': task.additional_information['seminar'],
                 'url': f"{settings.BASE_URL}{task.get_absolute_url()}",
+                'status': task.status,
                 'image': task.image
             }
 
