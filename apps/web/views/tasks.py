@@ -24,7 +24,7 @@ class CrateTaskView(LoginRequiredMixin, CreateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
-        django_rq.enqueue(basic_job, self.object.pk, self.request.user.is_anonymous)
+        django_rq.enqueue(basic_job, self.object.pk, not self.request.user.is_staff)
         return HttpResponseRedirect(self.get_success_url())
 
 

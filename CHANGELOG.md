@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.6.0 : TBD
+
+- **Added**: **Evaluation** introduced
+- **Fixed**: Private scenarios are executed only by `is_staff` users
+
 ## 1.5.1 : 2023-02-17
 
 - **Fixed**: [Support for uppercase docker image name](https://github.com/FIIT-Databases/tester/issues/1)
