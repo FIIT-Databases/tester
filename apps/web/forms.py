@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from apps.core.models import Task
+from apps.core.models import Task, Evaluation
 
 
 class TaskForm(ModelForm):
@@ -10,3 +10,9 @@ class TaskForm(ModelForm):
 
     def clean_image(self):
         return self.cleaned_data['image'].lower()
+
+
+class EvaluationForm(ModelForm):
+    class Meta:
+        model = Evaluation
+        fields = ['assignment', 'links']

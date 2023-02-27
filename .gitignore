@@ -7,6 +7,8 @@ node_modules/
 !logs/.gitkeep
 /media/*
 !/media/.gitkeep
+/private/*
+!/private/.gitkeep
 *.DS_Store
 *.pyc
 *.pyo

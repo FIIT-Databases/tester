@@ -18,7 +18,8 @@ class Dashboard(View):
         days.add(_('Tasks'), list(map(lambda item: item['count'], tasks)))
 
         task_records = TaskRecord.objects.filter(
-            task__executor=Task.Executor.FORM
+            task__executor=Task.Executor.FORM,
+            task__user__is_staff=False
         ).values("status").order_by().annotate(count=Count("id"))
         task_record_status = pygal.Pie()
         for task_record in task_records:
@@ -26,7 +27,9 @@ class Dashboard(View):
 
         queue = django_rq.get_queue('default')
 
-        top_users = Task.objects.all().values('user__username').annotate(total=Count('id')).order_by('-total')[:10]
+        top_users = Task.objects.filter(
+            user__is_staff=False
+        ).values('user__username').annotate(total=Count('id')).order_by('-total')[:10]
 
         return render(request, 'web/dashboard.html', {
             'total_tests': Task.objects.filter(executor=Task.Executor.FORM).count(),

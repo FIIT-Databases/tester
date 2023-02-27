@@ -1,0 +1,46 @@
+{% extends '_layout/base.html' %}
+{% load i18n %}
+{% load bootstrap5 %}
+
+{% block content %}
+	<div class="row">
+		<div class="col-lg-10">
+			<h1>{% trans "Evaluations" %}</h1>
+		</div>
+		<div class="col-lg-2 text-end">
+			<a class="btn btn-primary" href="{% url 'evaluation-new' %}" role="button">
+				<i class="bi bi-plus-lg"></i>
+				{% translate "New evaluation" %}
+			</a>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<table class="table">
+				<thead>
+				<tr>
+					<th data-field="name" data-sortable="true">{% trans 'Name' %}</th>
+					<th data-field="assignment" data-sortable="true">{% trans 'Assignment' %}</th>
+					<th data-field="actions">{% trans 'Actions' %}</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for evaluation in evaluations %}
+					<tr>
+						<td>{{ evaluation.created_at }}</td>
+						<td>{{ evaluation.assignment.name }}</td>
+						<td>
+							{% if evaluation.is_done %}
+								<a href="{% url 'evaluation-result' evaluation.id %}">
+									<i class="bi bi-cloud-download"></i>
+								</a>
+							{% endif %}
+						</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endblock %}

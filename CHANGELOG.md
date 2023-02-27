@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.6.0 : TBD
+## 1.6.0 : 2023-02-27
 
 - **Added**: **Evaluation** introduced
 - **Fixed**: Private scenarios are executed only by `is_staff` users

@@ -22,6 +22,7 @@ class Task(BaseModel):
     class Executor(models.TextChoices):
         FORM = 'form', _('form')
         JOB = 'job', _('job')
+        EVALUATION = 'evaluation', _('evaluation')
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
     assigment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name='tasks')
@@ -36,6 +37,8 @@ class Task(BaseModel):
     )
     message = models.TextField(null=True, editable=False)
     output = models.TextField(null=True, editable=False)
+    note = models.TextField(null=True)
+    additional_information = models.JSONField(null=True)
 
     def get_absolute_url(self):
         return reverse('task-detail', kwargs={'task_id': self.pk})
