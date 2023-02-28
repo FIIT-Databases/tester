@@ -21,7 +21,7 @@ class Evaluation(BaseModel):
     tasks = models.ManyToManyField(Task)
 
     def is_done(self) -> bool:
-        return self.tasks.filter(status=Task.Status.PENDING).exists()
+        return not self.tasks.filter(status=Task.Status.PENDING).exists()
 
     def __str__(self) -> str:
         return f"{self.assignment.name} - {self.created_at.strftime('%Y-%m-%d')}"
