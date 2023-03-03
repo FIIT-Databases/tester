@@ -1,3 +1,4 @@
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from apps.core.models.base import BaseModel
@@ -11,6 +12,7 @@ class Assignment(BaseModel):
 
     name = models.CharField(max_length=200)
     database = models.CharField(max_length=100, null=True, blank=True)
+    schemas = ArrayField(models.CharField(max_length=100), null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.name}"

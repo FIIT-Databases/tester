@@ -12,6 +12,7 @@ from typing import Optional
 from uuid import UUID
 
 import docker
+import psycopg2
 import sentry_sdk
 from django.conf import settings
 from django.db import connection
@@ -54,8 +55,21 @@ class BasicJob:
             )
             cursor.execute(f"GRANT ALL PRIVILEGES ON DATABASE {self._database_name} TO {self._database_name};")
 
+        conn = psycopg2.connect(
+            host=settings.DATABASES['default']['HOST'],
+            database=self._database_name,
+            user=settings.DATABASES['default']['USER'],
+            password=settings.DATABASES['default']['PASSWORD'],
+            port=settings.DATABASES['default']['PORT']
+        )
+
+        with conn.cursor() as cursor:
+            for schema in self._task.assigment.schemas:
+                cursor.execute(f"GRANT USAGE ON SCHEMA {schema} TO {self._database_name};")
+        conn.close()
+
     def run(self):
-        client = docker.from_env()  # FIXME: asi tazko
+        client = docker.from_env()
 
         params = {
             'image': self._task.image,

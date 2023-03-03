@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.0 : 2023-03-03
+
+- **Added**: Database schemas support
+
 ## 1.6.0 : 2023-02-27
 
 - **Added**: **Evaluation** introduced
