@@ -69,6 +69,7 @@ class BasicJob:
 
             with conn.cursor() as cursor:
                 for schema in self._task.assigment.schemas:
+                    cursor.execute(f"ALTER SCHEMA {schema} OWNER TO {self._database_name};")
                     cursor.execute(f"GRANT USAGE ON SCHEMA {schema} TO {self._database_name};")
             conn.close()
 
