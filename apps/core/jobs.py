@@ -53,6 +53,7 @@ class BasicJob:
             cursor.execute(
                 f"CREATE USER {self._database_name} WITH ENCRYPTED PASSWORD '{self._database_password}';"
             )
+            cursor.execute(f"GRANT  {self._database_name} TO {settings.DATABASES['default']['USER']};")
             cursor.execute(f"GRANT ALL PRIVILEGES ON DATABASE {self._database_name} TO {self._database_name};")
             cursor.execute(f"ALTER DATABASE  {self._database_name} OWNER TO {self._database_name};")
 
