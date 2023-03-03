@@ -54,6 +54,7 @@ class BasicJob:
                 f"CREATE USER {self._database_name} WITH ENCRYPTED PASSWORD '{self._database_password}';"
             )
             cursor.execute(f"GRANT ALL PRIVILEGES ON DATABASE {self._database_name} TO {self._database_name};")
+            cursor.execute(f"ALTER DATABASE  {self._database_name} OWNER TO {self._database_name};")
 
         conn = psycopg2.connect(
             host=settings.DATABASES['default']['HOST'],
@@ -65,6 +66,7 @@ class BasicJob:
 
         with conn.cursor() as cursor:
             for schema in self._task.assigment.schemas:
+                cursor.execute(f"GRANT USAGE ON SCHEMA {schema} TO {self._database_name};")
                 cursor.execute(f"GRANT USAGE ON SCHEMA {schema} TO {self._database_name};")
         conn.close()
 
