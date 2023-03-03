@@ -48,28 +48,29 @@ class BasicJob:
     def prepare(self):
         with connection.cursor() as cursor:
             cursor.execute(
-                f"CREATE DATABASE {self._database_name} TEMPLATE {self._task.assigment.database or 'template0'};"
-            )
-            cursor.execute(
                 f"CREATE USER {self._database_name} WITH ENCRYPTED PASSWORD '{self._database_password}';"
             )
-            cursor.execute(f"GRANT  {self._database_name} TO {settings.DATABASES['default']['USER']};")
+            cursor.execute(f"GRANT {self._database_name} TO {settings.DATABASES['default']['USER']};")
+            cursor.execute(
+                f"CREATE DATABASE {self._database_name} OWNER {self._database_name} "
+                f"TEMPLATE {self._task.assigment.database or 'template0'};"
+            )
             cursor.execute(f"GRANT ALL PRIVILEGES ON DATABASE {self._database_name} TO {self._database_name};")
-            cursor.execute(f"ALTER DATABASE  {self._database_name} OWNER TO {self._database_name};")
+            # cursor.execute(f"ALTER DATABASE  {self._database_name} OWNER TO {self._database_name};")
 
-        conn = psycopg2.connect(
-            host=settings.DATABASES['default']['HOST'],
-            database=self._database_name,
-            user=settings.DATABASES['default']['USER'],
-            password=settings.DATABASES['default']['PASSWORD'],
-            port=settings.DATABASES['default']['PORT']
-        )
+        if self._task.assigment.schemas:
+            conn = psycopg2.connect(
+                host=settings.DATABASES['default']['HOST'],
+                database=self._database_name,
+                user=settings.DATABASES['default']['USER'],
+                password=settings.DATABASES['default']['PASSWORD'],
+                port=settings.DATABASES['default']['PORT']
+            )
 
-        with conn.cursor() as cursor:
-            for schema in self._task.assigment.schemas:
-                cursor.execute(f"GRANT USAGE ON SCHEMA {schema} TO {self._database_name};")
-                cursor.execute(f"GRANT USAGE ON SCHEMA {schema} TO {self._database_name};")
-        conn.close()
+            with conn.cursor() as cursor:
+                for schema in self._task.assigment.schemas:
+                    cursor.execute(f"GRANT USAGE ON SCHEMA {schema} TO {self._database_name};")
+            conn.close()
 
     def run(self):
         client = docker.from_env()
