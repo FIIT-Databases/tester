@@ -56,7 +56,7 @@ class BasicJob:
                 f"TEMPLATE {self._task.assigment.database or 'template0'};"
             )
             cursor.execute(f"GRANT ALL PRIVILEGES ON DATABASE {self._database_name} TO {self._database_name};")
-            # cursor.execute(f"ALTER DATABASE  {self._database_name} OWNER TO {self._database_name};")
+            connection.commit()
 
         if self._task.assigment.schemas:
             conn = psycopg2.connect(
@@ -70,7 +70,9 @@ class BasicJob:
             with conn.cursor() as cursor:
                 for schema in self._task.assigment.schemas:
                     cursor.execute(f"ALTER SCHEMA {schema} OWNER TO {self._database_name};")
+                    cursor.execute(f"GRANT SELECT ON ALL TABLES IN SCHEMA {schema} TO {self._database_name};")
                     cursor.execute(f"GRANT USAGE ON SCHEMA {schema} TO {self._database_name};")
+                conn.commit()
             conn.close()
 
     def run(self):
