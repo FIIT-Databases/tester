@@ -3,8 +3,6 @@ import logging
 import os
 import random
 import string
-import subprocess
-import tempfile
 from difflib import HtmlDiff
 from json import JSONDecodeError
 from time import sleep
@@ -20,7 +18,6 @@ from django.utils.translation import gettext as _
 from docker.errors import DockerException
 from docker.models.containers import Container
 from requests import HTTPError, Timeout, Session, Request
-from requests.adapters import HTTPAdapter
 from requests.exceptions import InvalidJSONError
 
 from apps.core.models import Task, TaskRecord
@@ -82,7 +79,8 @@ class BasicJob:
             'detach': True,
             'environment': {
                 'NAME': 'Arthur',
-                'DATABASE_HOST': settings.DATABASES['default']['HOST'],
+                # 'DATABASE_HOST': settings.DATABASES['default']['HOST'],
+                'DATABASE_HOST': 'docker.for.mac.localhost',
                 'DATABASE_PORT': settings.DATABASES['default']['PORT'],
                 'DATABASE_NAME': self._database_name,
                 'DATABASE_USER': self._database_name,
@@ -128,9 +126,9 @@ class BasicJob:
             s = Session()
             # retry = Retry(connect=6, backoff_factor=2)
             # adapter = HTTPAdapter(max_retries=retry)
-            adapter = HTTPAdapter()
-            s.mount('http://', adapter)
-            s.mount('https://', adapter)
+            # adapter = HTTPAdapter()
+            # s.mount('http://', adapter)
+            # s.mount('https://', adapter)
             req = Request(
                 method=scenario.method,
                 url=record.url,
@@ -163,6 +161,7 @@ class BasicJob:
                     'status_code': r.status_code
                 }
                 record.save()
+                s.close()
                 continue
 
             try:
@@ -172,8 +171,10 @@ class BasicJob:
                 record.status = TaskRecord.Status.INVALID_JSON
                 record.message = str(e)
                 record.save()
+                s.close()
                 continue
 
+            s.close()
             record.response = json.dumps(response, sort_keys=True, indent=4)
             valid_response = json.dumps(scenario.response, sort_keys=True, indent=4)
 
@@ -182,30 +183,14 @@ class BasicJob:
             else:
                 valid_lines = valid_response.splitlines(keepends=True)
                 response_lines = record.response.splitlines(keepends=True)
-                if len(valid_response) > settings.DBS_TESTER_DIFF_THRESHOLD:
-                    actual = tempfile.NamedTemporaryFile()
-                    actual.write(record.response.encode())
-
-                    expected = tempfile.NamedTemporaryFile()
-                    expected.write(valid_response.encode())
-
-                    record.diff_type = TaskRecord.DiffType.FILE
-                    sub = subprocess.run(
-                        ['git', 'diff', '--no-index', expected.name, actual.name], stdout=subprocess.PIPE
-                    )
-                    record.diff = sub.stdout.decode()
-
-                    expected.close()
-                    actual.close()
-                else:
-                    d = HtmlDiff()
-                    record.diff_type = TaskRecord.DiffType.HTML
-                    record.diff = d.make_table(
-                        valid_lines,
-                        response_lines,
-                        fromdesc=_("Valid response"),
-                        todesc=_("Your response"),
-                    )
+                d = HtmlDiff()
+                record.diff_type = TaskRecord.DiffType.HTML
+                record.diff = d.make_table(
+                    valid_lines,
+                    response_lines,
+                    fromdesc=_("Valid response"),
+                    todesc=_("Your response"),
+                )
                 record.status = TaskRecord.Status.MISMATCH
 
             record.save()
