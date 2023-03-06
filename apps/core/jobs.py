@@ -79,8 +79,8 @@ class BasicJob:
             'detach': True,
             'environment': {
                 'NAME': 'Arthur',
-                # 'DATABASE_HOST': settings.DATABASES['default']['HOST'],
-                'DATABASE_HOST': 'docker.for.mac.localhost',
+                'DATABASE_HOST': settings.DATABASES['default']['HOST'],
+                # 'DATABASE_HOST': 'docker.for.mac.localhost',
                 'DATABASE_PORT': settings.DATABASES['default']['PORT'],
                 'DATABASE_NAME': self._database_name,
                 'DATABASE_USER': self._database_name,
