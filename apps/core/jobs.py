@@ -22,7 +22,6 @@ from docker.models.containers import Container
 from requests import HTTPError, Timeout, Session, Request
 from requests.adapters import HTTPAdapter
 from requests.exceptions import InvalidJSONError
-from urllib3 import Retry
 
 from apps.core.models import Task, TaskRecord
 
@@ -127,7 +126,7 @@ class BasicJob:
             )
 
             s = Session()
-            retry = Retry(connect=6, backoff_factor=2)
+            # retry = Retry(connect=6, backoff_factor=2)
             # adapter = HTTPAdapter(max_retries=retry)
             adapter = HTTPAdapter()
             s.mount('http://', adapter)
