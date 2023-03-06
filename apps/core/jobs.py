@@ -128,7 +128,8 @@ class BasicJob:
 
             s = Session()
             retry = Retry(connect=6, backoff_factor=2)
-            adapter = HTTPAdapter(max_retries=retry)
+            # adapter = HTTPAdapter(max_retries=retry)
+            adapter = HTTPAdapter()
             s.mount('http://', adapter)
             s.mount('https://', adapter)
             req = Request(

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.1 : 2023-03-06
+
+- **Fixed**: Disabled retry objects (because of the weird loops)
+
 ## 1.7.0 : 2023-03-03
 
 - **Added**: Database schemas support
