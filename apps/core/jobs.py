@@ -103,7 +103,7 @@ class BasicJob:
             }
 
         container: Container = client.containers.run(**params)
-        sleep(5)
+        sleep(10)
         container.reload()
 
         conditions = {}
