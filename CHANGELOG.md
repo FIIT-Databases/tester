@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.2 : 2023-03-17
+
+- **Fixed**: Gunicorn timeout extended
+- **Fixed**: Fixed a plethora of peculiar issues - honestly, I've already forgotten the specifics, but I'm too lazy to
+dig through Git. Just know that the code is now as smooth as a ninja cat on roller skates!
+
 ## 1.7.1 : 2023-03-06
 
 - **Fixed**: Disabled retry objects (because of the weird loops)
