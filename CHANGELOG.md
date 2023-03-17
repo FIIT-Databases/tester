@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.3 : 2023-03-17
+
+- **Fixed**: nginx timeout extended
+
 ## 1.7.2 : 2023-03-17
 
 - **Fixed**: Gunicorn timeout extended
