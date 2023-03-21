@@ -2,6 +2,7 @@
 
 ## 1.7.3 : 2023-03-17
 
+- **Fixed**: requests timeout extended (to 10s)
 - **Fixed**: nginx timeout extended
 
 ## 1.7.2 : 2023-03-17
