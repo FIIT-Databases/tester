@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.4 : 2023-04-05
+
+- **Fixed**: Security for evaluations
+- **Fixed**: Safely get additional info from tests
+
 ## 1.7.3 : 2023-03-17
 
 - **Fixed**: requests timeout extended (to 10s)

@@ -42,8 +42,11 @@ class CreateEvaluationView(LoginRequiredMixin, CreateView):
         return redirect('evaluation-overview')
 
 
-class EvaluationOverview(View):
+class EvaluationOverview(LoginRequiredMixin, View):
     def get(self, request):
+        if not request.user.is_superuser:
+            raise Http404()
+
         try:
             evaluation = Evaluation.objects.all()
         except Evaluation.DoesNotExist:
@@ -53,7 +56,7 @@ class EvaluationOverview(View):
         })
 
 
-class EvaluationResult(View):
+class EvaluationResult(LoginRequiredMixin, View):
     def get(self, request, evaluation_id: UUID):
         try:
             evaluation = Evaluation.objects.get(pk=evaluation_id)
@@ -63,14 +66,17 @@ class EvaluationResult(View):
         if not evaluation.is_done():
             raise Http404()
 
+        if not request.user.is_superuser:
+            raise Http404()
+
         result = []
 
         for task in evaluation.tasks.all():
             item = {
-                'email': task.additional_information['email'],
-                'name': task.additional_information['name'],
-                'surname': task.additional_information['surname'],
-                'seminar': task.additional_information['seminar'],
+                'email': task.additional_information.get('email'),
+                'name': task.additional_information.get('name'),
+                'surname': task.additional_information.get('surname'),
+                'seminar': task.additional_information.get('seminar'),
                 'url': f"{settings.BASE_URL}{task.get_absolute_url()}",
                 'status': task.status,
                 'image': task.image
