@@ -10,7 +10,7 @@ from typing import Optional
 from uuid import UUID
 
 import docker
-import psycopg2
+import psycopg
 import sentry_sdk
 from django.conf import settings
 from django.db import connection
@@ -55,7 +55,7 @@ class BasicJob:
             connection.commit()
 
         if self._task.assigment.schemas:
-            conn = psycopg2.connect(
+            conn = psycopg.connect(
                 host=settings.DATABASES['default']['HOST'],
                 database=self._database_name,
                 user=settings.DATABASES['default']['USER'],
