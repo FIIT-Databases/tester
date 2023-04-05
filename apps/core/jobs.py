@@ -57,7 +57,7 @@ class BasicJob:
         if self._task.assigment.schemas:
             conn = psycopg.connect(
                 host=settings.DATABASES['default']['HOST'],
-                database=self._database_name,
+                dbname=self._database_name,
                 user=settings.DATABASES['default']['USER'],
                 password=settings.DATABASES['default']['PASSWORD'],
                 port=settings.DATABASES['default']['PORT']
