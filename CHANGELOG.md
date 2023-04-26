@@ -1,9 +1,10 @@
 # Changelog
 
-## 1.8.0 : TBD
+## 1.8.0 : 2023-04-26
 
 - **Added**: Status code validation
 - **Added**: Ignored properties in diff
+- **Fixed**: Broader exception handling in the test execution (should prevent zombie stacking)
 
 ## 1.7.4 : 2023-04-05
 
