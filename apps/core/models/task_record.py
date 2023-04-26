@@ -16,6 +16,7 @@ class TaskRecord(BaseModel):
     class Status(models.TextChoices):
         OK = 'ok', _('OK')
         INVALID_JSON = 'invalid_json', _('parse error or invalid content-type')
+        INVALID_HTTP_STATUS = 'invalid_http_status', _('invalid http status code')
         TIMEOUT = 'timeout', _('timeout')
         MISMATCH = 'mismatch', _('response do not match')
         ERROR = 'error', _('4xx or 500x')
@@ -26,7 +27,7 @@ class TaskRecord(BaseModel):
 
     task = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='records')
     scenario = models.ForeignKey(Scenario, on_delete=models.CASCADE, related_name='+')
-    status = models.CharField(choices=Status.choices, max_length=15)
+    status = models.CharField(choices=Status.choices, max_length=20)
     url = models.URLField()
     response = models.TextField(null=True)
     diff = models.TextField(null=True)

@@ -1,3 +1,6 @@
+from http import HTTPStatus
+
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 from django.utils.translation import gettext_lazy as _
@@ -24,6 +27,8 @@ class Scenario(BaseModel):
     method = models.CharField(choices=Method.choices, help_text=_('HTTP method'), max_length=10, default=Method.GET)
     response = models.JSONField()
     body = models.JSONField(null=True, help_text=_('HTTP body'), blank=True)
+    ignored_properties = ArrayField(models.CharField(max_length=50), null=True)
+    status_code = models.SmallIntegerField(default=HTTPStatus.OK)
     is_public = models.BooleanField(default=False, help_text=_('Scenario publicity'))
 
     def __str__(self) -> str:

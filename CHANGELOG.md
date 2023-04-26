@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.0 : TBD
+
+- **Added**: Status code validation
+- **Added**: Ignored properties in diff
+
 ## 1.7.4 : 2023-04-05
 
 - **Fixed**: Security for evaluations

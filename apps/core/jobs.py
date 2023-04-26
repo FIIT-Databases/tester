@@ -155,11 +155,19 @@ class BasicJob:
                 r.raise_for_status()
             except HTTPError as e:
                 record.response = r.content
-                record.status = TaskRecord.Status.ERROR
+                record.status = TaskRecord.Status.OK if r.status_code == scenario.status_code else TaskRecord.Status.OK
                 record.message = str(e)
                 record.additional_data = {
                     'status_code': r.status_code
                 }
+                record.save()
+                s.close()
+                continue
+
+            if r.status_code != scenario.status_code:
+                record.response = r.content
+                record.status = TaskRecord.Status.INVALID_HTTP_STATUS
+                record.message = str(TaskRecord.Status.INVALID_HTTP_STATUS)
                 record.save()
                 s.close()
                 continue
@@ -175,7 +183,10 @@ class BasicJob:
                 continue
 
             s.close()
-            record.response = json.dumps(response, sort_keys=True, indent=4)
+            record.response = json.dumps({
+                key: response[key] for key in response if key in scenario.ignored_properties
+            }, sort_keys=True, indent=4
+            )
             valid_response = json.dumps(scenario.response, sort_keys=True, indent=4)
 
             if record.response == valid_response:
