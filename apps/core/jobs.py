@@ -236,7 +236,7 @@ class BasicJob:
         job.prepare()
         try:
             job.run()
-        except Exception as e:
+        except (BaseException, Exception) as e:
             task.status = Task.Status.FAILED
             task.message = str(e)
             task.save()
