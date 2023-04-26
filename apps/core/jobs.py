@@ -183,9 +183,9 @@ class BasicJob:
                 continue
 
             s.close()
-            record.response = json.dumps({
-                key: response[key] for key in response if key in scenario.ignored_properties
-            }, sort_keys=True, indent=4
+            record.response = json.dumps(
+                {key: response[key] for key in response if key in (scenario.ignored_properties or [])},
+                sort_keys=True, indent=4
             )
             valid_response = json.dumps(scenario.response, sort_keys=True, indent=4)
 
