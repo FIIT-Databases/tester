@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.0 : 2023-04-28
+
+- **Added**: Scenario priority
+
 ## 1.8.1 : 2023-04-28
 
 - **Fixed**: INVALID_HTTP_STATUS is now working

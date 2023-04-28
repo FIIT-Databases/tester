@@ -29,6 +29,7 @@ class Scenario(BaseModel):
     body = models.JSONField(null=True, help_text=_('HTTP body'), blank=True)
     ignored_properties = ArrayField(models.CharField(max_length=50), null=True)
     status_code = models.SmallIntegerField(default=HTTPStatus.OK)
+    priority = models.IntegerField(null=True)
     is_public = models.BooleanField(default=False, help_text=_('Scenario publicity'))
 
     def __str__(self) -> str:

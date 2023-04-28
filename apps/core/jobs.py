@@ -108,7 +108,7 @@ class BasicJob:
         if self._public_only:
             conditions['is_public'] = True
 
-        for scenario in self._task.assigment.scenarios.filter(**conditions):
+        for scenario in self._task.assigment.scenarios.filter(**conditions).order_by('-priority'):
             logging.info("Executing scenario %s for the task %s", scenario.pk, self._task.pk)
 
             if os.getenv('DOCKER'):
