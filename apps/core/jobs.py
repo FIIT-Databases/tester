@@ -15,7 +15,6 @@ import sentry_sdk
 from django.conf import settings
 from django.db import connection
 from django.utils.translation import gettext as _
-from docker.errors import DockerException
 from docker.models.containers import Container
 from requests import HTTPError, Timeout, Session, Request
 from requests.exceptions import InvalidJSONError
