@@ -155,7 +155,10 @@ class BasicJob:
                 r.raise_for_status()
             except HTTPError as e:
                 record.response = r.content
-                record.status = TaskRecord.Status.OK if r.status_code == scenario.status_code else TaskRecord.Status.INVALID_HTTP_STATUS
+                if r.status_code == scenario.status_code:
+                    record.status = TaskRecord.Status.OK
+                else:
+                    record.status = TaskRecord.Status.INVALID_HTTP_STATUS
                 record.message = str(e)
                 record.additional_data = {
                     'status_code': r.status_code
