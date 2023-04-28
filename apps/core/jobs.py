@@ -244,11 +244,10 @@ class BasicJob:
             task.message = str(e)
             task.save()
 
-            if isinstance(e, DockerException):
-                with sentry_sdk.push_scope() as scope:
-                    scope.set_extra("task", task.pk)
-                    scope.set_extra("image", task.image)
-                    sentry_sdk.capture_exception(e)
+            with sentry_sdk.push_scope() as scope:
+                scope.set_extra("task", task.pk)
+                scope.set_extra("image", task.image)
+                sentry_sdk.capture_exception(e)
 
         job.cleanup()
 
