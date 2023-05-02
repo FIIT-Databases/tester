@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.9.3 : 2023-05-02
+
+```
+Hate springs eternal
+In this black heart of mine
+Time heals nothing, I'll never forgive
+Hate springs eternal
+In this black heart of mine
+Time heals nothing, I'll never forgive, never forget
+Never ever
+```
+
+- **Fixed**: Bullshit response resolver using `TypeError` catch 🤷‍♂️
+
 ## 1.9.2 : 2023-05-02
 
 - **Fixed**: Catch `docker.errors.ImageNotFound` in `client.images.get(self._task.image).remove(force=True)`

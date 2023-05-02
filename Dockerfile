@@ -33,7 +33,7 @@ FROM alpine:3.17
 
 WORKDIR /usr/src/app
 
-RUN echo "1.9.2" > VERSION.txt
+RUN echo "1.9.3" > VERSION.txt
 RUN date -I > BUILD.txt
 
 # Dependencies

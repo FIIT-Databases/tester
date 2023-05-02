@@ -186,10 +186,15 @@ class BasicJob:
                 continue
 
             s.close()
-            record.response = json.dumps(
-                {key: response[key] for key in response if key not in (scenario.ignored_properties or [])},
-                sort_keys=True, indent=4
-            )
+
+            try:
+                record.response = json.dumps(
+                    {key: response[key] for key in response if key not in (scenario.ignored_properties or [])},
+                    sort_keys=True, indent=4
+                )
+            except TypeError:
+                record.response = json.dumps(response, sort_keys=True, indent=4)
+
             valid_response = json.dumps(scenario.response, sort_keys=True, indent=4)
 
             if record.response == valid_response:
@@ -243,7 +248,7 @@ class BasicJob:
         job.prepare()
         try:
             job.run()
-        except (BaseException, Exception) as e:
+        except (BaseException, Exception, TypeError) as e:
             task.status = Task.Status.FAILED
             task.message = str(e)
             task.save()
