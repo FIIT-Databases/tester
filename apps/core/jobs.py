@@ -213,9 +213,10 @@ class BasicJob:
         self._task.save()
 
         # Cleanup
-        container.stop()
-        container.remove()
-        client.images.get(self._task.image).remove()
+        container.stop(timeout=5)
+        sleep(5)
+        container.remove(force=True)
+        client.images.get(self._task.image).remove(force=True)
 
     def cleanup(self):
         with connection.cursor() as cursor:

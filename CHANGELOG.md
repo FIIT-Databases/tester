@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.1: 2023-05-02
+
+- **Fixed**: Force image removal
+
 ## 1.9.0 : 2023-04-28
 
 - **Added**: Scenario priority
