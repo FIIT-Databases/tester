@@ -1,6 +1,10 @@
 # Changelog
 
-## 1.9.1: 2023-05-02
+## 1.9.2 : 2023-05-02
+
+- **Fixed**: Catch `docker.errors.ImageNotFound` in `client.images.get(self._task.image).remove(force=True)`
+
+## 1.9.1 : 2023-05-02
 
 - **Fixed**: Force image removal
 
