@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dbs_tester"
-version = "1.9.3"
+version = "1.9.4"
 description = "DBS tester application"
 authors = [
     "Jakub Dubec <jakub.dubec@stuba.sk>"
