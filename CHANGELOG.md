@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.4 : 2023-05-05
+
+- **Changed**: Extended timeouts
+
 ## 1.9.3 : 2023-05-02
 
 ```
