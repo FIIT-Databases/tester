@@ -4,6 +4,7 @@ import os
 import random
 import string
 from difflib import HtmlDiff
+from http import HTTPStatus
 from json import JSONDecodeError
 from time import sleep
 from typing import Optional
@@ -175,44 +176,45 @@ class BasicJob:
                 s.close()
                 continue
 
-            try:
-                response = r.json()
-            except (InvalidJSONError, JSONDecodeError) as e:
-                record.response = r.content
-                record.status = TaskRecord.Status.INVALID_JSON
-                record.message = str(e)
-                record.save()
+            if r.status_code != HTTPStatus.NO_CONTENT:
+                try:
+                    response = r.json()
+                except (InvalidJSONError, JSONDecodeError) as e:
+                    record.response = r.content
+                    record.status = TaskRecord.Status.INVALID_JSON
+                    record.message = str(e)
+                    record.save()
+                    s.close()
+                    continue
+
                 s.close()
-                continue
 
-            s.close()
+                try:
+                    record.response = json.dumps(
+                        {key: response[key] for key in response if key not in (scenario.ignored_properties or [])},
+                        sort_keys=True, indent=4
+                    )
+                except TypeError:
+                    record.response = json.dumps(response, sort_keys=True, indent=4)
 
-            try:
-                record.response = json.dumps(
-                    {key: response[key] for key in response if key not in (scenario.ignored_properties or [])},
-                    sort_keys=True, indent=4
-                )
-            except TypeError:
-                record.response = json.dumps(response, sort_keys=True, indent=4)
+                valid_response = json.dumps(scenario.response, sort_keys=True, indent=4)
 
-            valid_response = json.dumps(scenario.response, sort_keys=True, indent=4)
+                if record.response == valid_response:
+                    record.status = TaskRecord.Status.OK
+                else:
+                    valid_lines = valid_response.splitlines(keepends=True)
+                    response_lines = record.response.splitlines(keepends=True)
+                    d = HtmlDiff()
+                    record.diff_type = TaskRecord.DiffType.HTML
+                    record.diff = d.make_table(
+                        valid_lines,
+                        response_lines,
+                        fromdesc=_("Valid response"),
+                        todesc=_("Your response"),
+                    )
+                    record.status = TaskRecord.Status.MISMATCH
 
-            if record.response == valid_response:
-                record.status = TaskRecord.Status.OK
-            else:
-                valid_lines = valid_response.splitlines(keepends=True)
-                response_lines = record.response.splitlines(keepends=True)
-                d = HtmlDiff()
-                record.diff_type = TaskRecord.DiffType.HTML
-                record.diff = d.make_table(
-                    valid_lines,
-                    response_lines,
-                    fromdesc=_("Valid response"),
-                    todesc=_("Your response"),
-                )
-                record.status = TaskRecord.Status.MISMATCH
-
-            record.save()
+                record.save()
 
         self._task.status = Task.Status.DONE
         self._task.output = container.logs().decode()

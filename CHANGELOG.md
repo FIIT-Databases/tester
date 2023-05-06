@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.9.5 : 2023-05-06
+
+- **Fixed**: Do not check for the response payload with HTTP 204 is returned
+
 ## 1.9.4 : 2023-05-05
 
 - **Changed**: Extended timeouts
