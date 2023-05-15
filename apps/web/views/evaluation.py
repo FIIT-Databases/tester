@@ -84,10 +84,9 @@ class EvaluationResult(LoginRequiredMixin, View):
             }
 
             for record in task.records.all():
-                key = f"{record.scenario.method} {record.scenario.url}"
-                keys.add(key)
-                item[key] = record.status
+                item[f"{record.scenario.method} {record.scenario.url}"] = record.status
 
+            keys.update(item.keys())
             result.append(item)
 
         buffer = io.StringIO()
