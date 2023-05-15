@@ -1,4 +1,4 @@
-FROM alpine:3.17 as builder
+FROM alpine:3.18 as builder
 
 WORKDIR /root
 
@@ -29,11 +29,11 @@ RUN pip install -r requirements.txt --no-cache-dir
 RUN npm i
 RUN npm run build
 
-FROM alpine:3.17
+FROM alpine:3.18
 
 WORKDIR /usr/src/app
 
-RUN echo "1.9.5" > VERSION.txt
+RUN echo "1.10.0" > VERSION.txt
 RUN date -I > BUILD.txt
 
 # Dependencies

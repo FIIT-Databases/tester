@@ -70,6 +70,7 @@ class EvaluationResult(LoginRequiredMixin, View):
             raise Http404()
 
         result = []
+        keys = set()
 
         for task in evaluation.tasks.all():
             item = {
@@ -83,12 +84,14 @@ class EvaluationResult(LoginRequiredMixin, View):
             }
 
             for record in task.records.all():
-                item[f"{record.scenario.method} {record.scenario.url}"] = record.status
+                key = f"{record.scenario.method} {record.scenario.url}"
+                keys.add(key)
+                item[key] = record.status
 
             result.append(item)
 
         buffer = io.StringIO()
-        writer = csv.DictWriter(buffer, fieldnames=result[0].keys())
+        writer = csv.DictWriter(buffer, fieldnames=list(keys))
         writer.writeheader()
         writer.writerows(result)
 

@@ -106,14 +106,14 @@ lxml = ["lxml"]
 
 [[package]]
 name = "certifi"
-version = "2022.12.7"
+version = "2023.5.7"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "certifi-2022.12.7-py3-none-any.whl", hash = "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"},
-    {file = "certifi-2022.12.7.tar.gz", hash = "sha256:35824b4c3a97115964b408844d64aa14db1cc518f6562e8d7261699d1350a9e3"},
+    {file = "certifi-2023.5.7-py3-none-any.whl", hash = "sha256:c6c2e98f5c7869efca1f8916fed228dd91539f9f1b444c314c06eef02980c716"},
+    {file = "certifi-2023.5.7.tar.gz", hash = "sha256:0f0d56dc5a6ad56fd4ba36484d6cc34451e1c6548c61daad8c320169f91eddc7"},
 ]
 
 [[package]]
@@ -368,20 +368,20 @@ docs = ["m2r2 (>=0.2.5,<0.3.0)", "sphinx (>=4.4,<5.0)", "sphinx_rtd_theme (>=1.0
 
 [[package]]
 name = "django-rq"
-version = "2.8.0"
+version = "2.8.1"
 description = "An app that provides django integration for RQ (Redis Queue)"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "django-rq-2.8.0.tar.gz", hash = "sha256:161fcd037aa837e047400db909d2efa2867294c5efe1c45bcaf8d888ad1839b4"},
-    {file = "django_rq-2.8.0-py2.py3-none-any.whl", hash = "sha256:2820ecefed024a7f14fe42ebc46b22f53bcd84639a79c0a379491c10d82bfaa3"},
+    {file = "django-rq-2.8.1.tar.gz", hash = "sha256:ff053aa4d1b1e1acc47c99b4a21b514de8745894c00d1e6f4abc8b37d35d66d6"},
+    {file = "django_rq-2.8.1-py2.py3-none-any.whl", hash = "sha256:f5d649dc57b5564011460b2b69c8a60a4f5f10ee8692b51d1dfc17035b1039b8"},
 ]
 
 [package.dependencies]
 django = ">=2.0"
 redis = ">=3"
-rq = ">=1.2"
+rq = ">=1.14"
 
 [package.extras]
 sentry = ["raven (>=6.1.0)"]
@@ -389,14 +389,14 @@ testing = ["mock (>=2.0.0)"]
 
 [[package]]
 name = "docker"
-version = "6.0.1"
+version = "6.1.2"
 description = "A Python library for the Docker Engine API."
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "docker-6.0.1-py3-none-any.whl", hash = "sha256:dbcb3bd2fa80dca0788ed908218bf43972772009b881ed1e20dfc29a65e49782"},
-    {file = "docker-6.0.1.tar.gz", hash = "sha256:896c4282e5c7af5c45e8b683b0b0c33932974fe6e50fc6906a0a83616ab3da97"},
+    {file = "docker-6.1.2-py3-none-any.whl", hash = "sha256:134cd828f84543cbf8e594ff81ca90c38288df3c0a559794c12f2e4b634ea19e"},
+    {file = "docker-6.1.2.tar.gz", hash = "sha256:dcc088adc2ec4e7cfc594e275d8bd2c9738c56c808de97476939ef67db5af8c2"},
 ]
 
 [package.dependencies]
@@ -736,18 +736,18 @@ files = [
 
 [[package]]
 name = "redis"
-version = "4.5.4"
+version = "4.5.5"
 description = "Python client for Redis database and key-value store"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "redis-4.5.4-py3-none-any.whl", hash = "sha256:2c19e6767c474f2e85167909061d525ed65bea9301c0770bb151e041b7ac89a2"},
-    {file = "redis-4.5.4.tar.gz", hash = "sha256:73ec35da4da267d6847e47f68730fdd5f62e2ca69e3ef5885c6a78a9374c3893"},
+    {file = "redis-4.5.5-py3-none-any.whl", hash = "sha256:77929bc7f5dab9adf3acba2d3bb7d7658f1e0c2f1cafe7eb36434e751c471119"},
+    {file = "redis-4.5.5.tar.gz", hash = "sha256:dc87a0bdef6c8bfe1ef1e1c40be7034390c2ae02d92dcd0c7ca1729443899880"},
 ]
 
 [package.dependencies]
-async-timeout = {version = ">=4.0.2", markers = "python_version <= \"3.11.2\""}
+async-timeout = {version = ">=4.0.2", markers = "python_full_version <= \"3.11.2\""}
 
 [package.extras]
 hiredis = ["hiredis (>=1.0.0)"]
@@ -777,14 +777,14 @@ use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
 name = "rq"
-version = "1.14.0"
+version = "1.14.1"
 description = "RQ is a simple, lightweight, library for creating background jobs, and processing them."
 category = "main"
 optional = false
 python-versions = ">=3.6"
 files = [
-    {file = "rq-1.14.0-py2.py3-none-any.whl", hash = "sha256:dc2c54f4f56e637b056f0ff5859c0e4b4baec657a08c57cee86ebe84bbf984ce"},
-    {file = "rq-1.14.0.tar.gz", hash = "sha256:caadcbd117d898e4fe3e97cf761e2d9c598a387195ee4da3e3d81000918abac3"},
+    {file = "rq-1.14.1-py2.py3-none-any.whl", hash = "sha256:37e003db1da205e08db6cc4653b7c6ccfd9292000954240308abfce2ebde43ba"},
+    {file = "rq-1.14.1.tar.gz", hash = "sha256:5fb86038922ddd76eb2d9aa0adeec6dcf64f159dbbe730b26358b1417120dd44"},
 ]
 
 [package.dependencies]
@@ -793,19 +793,19 @@ redis = ">=3.5.0"
 
 [[package]]
 name = "sentry-sdk"
-version = "1.21.1"
+version = "1.23.0"
 description = "Python client for Sentry (https://sentry.io)"
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "sentry-sdk-1.21.1.tar.gz", hash = "sha256:99c15556a23621be9f18c2955f7ce63321713bf1c0ad396b27b61399bac5f458"},
-    {file = "sentry_sdk-1.21.1-py2.py3-none-any.whl", hash = "sha256:092888f3abf7a2ea78f0bfcefc3e0465caee2b6f0efb26f538ccc60f95dca179"},
+    {file = "sentry-sdk-1.23.0.tar.gz", hash = "sha256:58f4ff9e76c21bc7172eeec9f1bccb3ff2247c74c71d5590438ce36c803f46ea"},
+    {file = "sentry_sdk-1.23.0-py2.py3-none-any.whl", hash = "sha256:01b56a276642d31cf9b4aaf0b55938677265d7006be4785a10ef6330d0f5bba9"},
 ]
 
 [package.dependencies]
 certifi = "*"
-urllib3 = {version = ">=1.26.11", markers = "python_version >= \"3.6\""}
+urllib3 = {version = ">=1.26.11,<2.0.0", markers = "python_version >= \"3.6\""}
 
 [package.extras]
 aiohttp = ["aiohttp (>=3.5)"]
@@ -817,10 +817,11 @@ chalice = ["chalice (>=1.16.0)"]
 django = ["django (>=1.8)"]
 falcon = ["falcon (>=1.4)"]
 fastapi = ["fastapi (>=0.79.0)"]
-flask = ["blinker (>=1.1)", "flask (>=0.11)"]
+flask = ["blinker (>=1.1)", "flask (>=0.11)", "markupsafe"]
 grpcio = ["grpcio (>=1.21.1)"]
 httpx = ["httpx (>=0.16.0)"]
 huey = ["huey (>=2)"]
+loguru = ["loguru (>=0.5)"]
 opentelemetry = ["opentelemetry-distro (>=0.35b0)"]
 pure-eval = ["asttokens", "executing", "pure-eval"]
 pymongo = ["pymongo (>=3.1)"]

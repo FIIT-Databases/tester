@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.10.0
+
+- **Changed**: Alpine Linux 3.18
+- **Fixed**: Build evaluation results keys using `set` manually
+
 ## 1.9.5 : 2023-05-06
 
 - **Fixed**: Do not check for the response payload with HTTP 204 is returned
