@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.10.0
+## 1.10.0 : 2023-05-16
 
 - **Changed**: Alpine Linux 3.18
 - **Fixed**: Build evaluation results keys using `set` manually
