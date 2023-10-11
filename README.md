@@ -67,11 +67,11 @@ To set up instance with demo database follow these simple steps:
 5. Execute migrations `python manage.py migrate`
 6. Create superuser using `python manage.py createsuperuser` or setup LDAP in `auth_sources` table
 
-## Database
+## Docs
 
-This project requires PostgresSQL 10+ database server to run. Here is the EER diagram bellow.
-
-![](docs/eer.jpg)
+For more information check the `docs` directory.
 
 ---
+![](docs/fiit.png)
+
 Made with ❤️ and ☕️ FIIT STU (c) 2022-2023
