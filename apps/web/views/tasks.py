@@ -17,13 +17,20 @@ class CrateTaskView(LoginRequiredMixin, CreateView):
     form_class = TaskForm
     template_name = "web/task.html"
 
-    def __init__(self):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.object = None
+
+    def get_initial(self):
+        return {
+            'image': self.request.session.pop('task_form', {}).get('image', '')
+        }
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
+        self.request.session["task_form"] = self.request.POST.dict()
         django_rq.enqueue(basic_job, self.object.pk, not self.request.user.is_staff)
         return HttpResponseRedirect(self.get_success_url())
 

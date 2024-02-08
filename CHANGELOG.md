@@ -2,6 +2,7 @@
 
 ## 1.11.0 : 2024-02-08
 
+- **Added**: [Save and prefill image on new test #5](https://github.com/FIIT-Databases/tester/issues/5)
 - **Changed**: Django 5.0 upgrade
 - **Changed**: Use Debian-based containers
 

@@ -47,7 +47,10 @@
 									</li>
 								{% endif %}
 								<li>
-									<a class="dropdown-item" href="{% url 'logout' %}">{% translate "Logout" %}</a>
+										<form method="post" action="{% url 'logout' %}">
+												{% csrf_token %}
+												<button class="dropdown-item" type="submit">{% translate "Logout" %}</button>
+										</form>
 								</li>
 							</ul>
 						</li>
