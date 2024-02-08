@@ -7,7 +7,6 @@ import uuid
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -16,90 +15,147 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Assignment',
+            name="Assignment",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=200)),
+                ("id", models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=200)),
             ],
             options={
-                'db_table': 'assignments',
-                'default_permissions': (),
+                "db_table": "assignments",
+                "default_permissions": (),
             },
         ),
         migrations.CreateModel(
-            name='AuthSource',
+            name="AuthSource",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=200)),
-                ('driver', models.CharField(choices=[('ldap', 'ldap')], default='ldap', max_length=20)),
-                ('content', models.JSONField(null=True)),
-                ('is_active', models.BooleanField(default=True)),
+                ("id", models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=200)),
+                ("driver", models.CharField(choices=[("ldap", "ldap")], default="ldap", max_length=20)),
+                ("content", models.JSONField(null=True)),
+                ("is_active", models.BooleanField(default=True)),
             ],
             options={
-                'verbose_name': 'Authentication source',
-                'verbose_name_plural': 'Authentication sources',
-                'db_table': 'auth_sources',
-                'default_permissions': (),
+                "verbose_name": "Authentication source",
+                "verbose_name_plural": "Authentication sources",
+                "db_table": "auth_sources",
+                "default_permissions": (),
             },
         ),
         migrations.CreateModel(
-            name='Scenario',
+            name="Scenario",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('url', models.CharField(max_length=200)),
-                ('response', models.JSONField()),
-                ('is_public', models.BooleanField(default=False)),
-                ('assigment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scenarios', to='core.assignment')),
+                ("id", models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("url", models.CharField(max_length=200)),
+                ("response", models.JSONField()),
+                ("is_public", models.BooleanField(default=False)),
+                (
+                    "assigment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="scenarios", to="core.assignment"
+                    ),
+                ),
             ],
             options={
-                'db_table': 'scenarios',
-                'default_permissions': (),
+                "db_table": "scenarios",
+                "default_permissions": (),
             },
         ),
         migrations.CreateModel(
-            name='Task',
+            name="Task",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('status', models.CharField(choices=[('pending', 'pending'), ('done', 'done'), ('failed', 'failed')], default='pending', max_length=15)),
-                ('executor', models.CharField(choices=[('form', 'form'), ('job', 'job')], default='form', max_length=15)),
-                ('image', models.CharField(help_text='Path to GitHub hosted docker image. Example: ghcr.io/fiit-databases/dbs-python-example:master', max_length=255, verbose_name='Docker Image')),
-                ('message', models.TextField(null=True)),
-                ('assigment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tasks', to='core.assignment')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tasks', to=settings.AUTH_USER_MODEL)),
+                ("id", models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("pending", "pending"), ("done", "done"), ("failed", "failed")],
+                        default="pending",
+                        max_length=15,
+                    ),
+                ),
+                (
+                    "executor",
+                    models.CharField(choices=[("form", "form"), ("job", "job")], default="form", max_length=15),
+                ),
+                (
+                    "image",
+                    models.CharField(
+                        help_text="Path to GitHub hosted docker image. Example: ghcr.io/fiit-databases/dbs-python-example:master",
+                        max_length=255,
+                        verbose_name="Docker Image",
+                    ),
+                ),
+                ("message", models.TextField(null=True)),
+                (
+                    "assigment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="tasks", to="core.assignment"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="tasks", to=settings.AUTH_USER_MODEL
+                    ),
+                ),
             ],
             options={
-                'db_table': 'tasks',
-                'default_permissions': (),
+                "db_table": "tasks",
+                "default_permissions": (),
             },
         ),
         migrations.CreateModel(
-            name='TaskRecord',
+            name="TaskRecord",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('status', models.CharField(choices=[('ok', 'OK'), ('invalid_json', 'parse error or invalid content-type'), ('timeout', 'timeout'), ('mismatch', 'response do not match'), ('error', '4xx or 500x')], max_length=15)),
-                ('url', models.URLField()),
-                ('response', models.TextField(null=True)),
-                ('diff', models.TextField(null=True)),
-                ('diff_type', models.TextField(choices=[('html', 'HTML'), ('file', 'file')], max_length=15, null=True)),
-                ('message', models.TextField()),
-                ('duration', models.DurationField(null=True)),
-                ('additional_data', models.JSONField(default=dict)),
-                ('scenario', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='+', to='core.scenario')),
-                ('task', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='records', to='core.task')),
+                ("id", models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("ok", "OK"),
+                            ("invalid_json", "parse error or invalid content-type"),
+                            ("timeout", "timeout"),
+                            ("mismatch", "response do not match"),
+                            ("error", "4xx or 500x"),
+                        ],
+                        max_length=15,
+                    ),
+                ),
+                ("url", models.URLField()),
+                ("response", models.TextField(null=True)),
+                ("diff", models.TextField(null=True)),
+                (
+                    "diff_type",
+                    models.TextField(choices=[("html", "HTML"), ("file", "file")], max_length=15, null=True),
+                ),
+                ("message", models.TextField()),
+                ("duration", models.DurationField(null=True)),
+                ("additional_data", models.JSONField(default=dict)),
+                (
+                    "scenario",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="+", to="core.scenario"
+                    ),
+                ),
+                (
+                    "task",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name="records", to="core.task"
+                    ),
+                ),
             ],
             options={
-                'db_table': 'task_records',
-                'default_permissions': (),
+                "db_table": "task_records",
+                "default_permissions": (),
             },
         ),
     ]

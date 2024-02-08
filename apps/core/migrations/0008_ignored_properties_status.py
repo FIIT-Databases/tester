@@ -6,20 +6,21 @@ import http
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0007_schemas'),
+        ("core", "0007_schemas"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='scenario',
-            name='ignored_properties',
-            field=django.contrib.postgres.fields.ArrayField(base_field=models.CharField(max_length=50), null=True, size=None),
+            model_name="scenario",
+            name="ignored_properties",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(max_length=50), null=True, size=None
+            ),
         ),
         migrations.AddField(
-            model_name='scenario',
-            name='status_code',
-            field=models.SmallIntegerField(default=http.HTTPStatus['OK']),
+            model_name="scenario",
+            name="status_code",
+            field=models.SmallIntegerField(default=http.HTTPStatus["OK"]),
         ),
     ]

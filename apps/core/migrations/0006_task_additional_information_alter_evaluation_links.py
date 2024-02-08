@@ -6,20 +6,22 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0005_evaluations'),
+        ("core", "0005_evaluations"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='task',
-            name='additional_information',
+            model_name="task",
+            name="additional_information",
             field=models.JSONField(null=True),
         ),
         migrations.AlterField(
-            model_name='evaluation',
-            name='links',
-            field=models.FileField(storage=apps.core.models.base.PrivateFileStorage(), upload_to=apps.core.models.evaluation.Evaluation._upload_to_path),
+            model_name="evaluation",
+            name="links",
+            field=models.FileField(
+                storage=apps.core.models.base.PrivateFileStorage(),
+                upload_to=apps.core.models.evaluation.Evaluation._upload_to_path,
+            ),
         ),
     ]

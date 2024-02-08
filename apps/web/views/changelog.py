@@ -8,11 +8,7 @@ class Changelog(View):
     def get(self, request):
         with open(f"{settings.BASE_DIR}/CHANGELOG.md") as fp:
             data = markdown.markdown(fp.read())
-        return render(request, 'web/changelog.html', {
-            'data': data
-        })
+        return render(request, "web/changelog.html", {"data": data})
 
 
-__all__ = [
-    'Changelog'
-]
+__all__ = ["Changelog"]

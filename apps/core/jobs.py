@@ -39,14 +39,12 @@ class BasicJob:
     def __init__(self, task: Task, public_only: bool):
         self._task = task
         self._public_only = public_only
-        self._database_name = ''.join(random.choices(string.ascii_letters, k=10)).lower()
-        self._database_password = ''.join(random.choices(string.ascii_letters, k=10)).lower()
+        self._database_name = "".join(random.choices(string.ascii_letters, k=10)).lower()
+        self._database_password = "".join(random.choices(string.ascii_letters, k=10)).lower()
 
     def prepare(self):
         with connection.cursor() as cursor:
-            cursor.execute(
-                f"CREATE USER {self._database_name} WITH ENCRYPTED PASSWORD '{self._database_password}';"
-            )
+            cursor.execute(f"CREATE USER {self._database_name} WITH ENCRYPTED PASSWORD '{self._database_password}';")
             cursor.execute(f"GRANT {self._database_name} TO {settings.DATABASES['default']['USER']};")
             cursor.execute(
                 f"CREATE DATABASE {self._database_name} OWNER {self._database_name} "
@@ -57,11 +55,11 @@ class BasicJob:
 
         if self._task.assigment.schemas:
             conn = psycopg.connect(
-                host=settings.DATABASES['default']['HOST'],
+                host=settings.DATABASES["default"]["HOST"],
                 dbname=self._database_name,
-                user=settings.DATABASES['default']['USER'],
-                password=settings.DATABASES['default']['PASSWORD'],
-                port=settings.DATABASES['default']['PORT']
+                user=settings.DATABASES["default"]["USER"],
+                password=settings.DATABASES["default"]["PASSWORD"],
+                port=settings.DATABASES["default"]["PORT"],
             )
 
             with conn.cursor() as cursor:
@@ -76,30 +74,25 @@ class BasicJob:
         client = docker.from_env()
 
         params = {
-            'image': self._task.image,
-            'detach': True,
-            'environment': {
-                'NAME': 'Arthur',
-                'DATABASE_HOST': settings.DATABASES['default']['HOST'],
+            "image": self._task.image,
+            "detach": True,
+            "environment": {
+                "NAME": "Arthur",
+                "DATABASE_HOST": settings.DATABASES["default"]["HOST"],
                 # 'DATABASE_HOST': 'docker.for.mac.localhost',
-                'DATABASE_PORT': settings.DATABASES['default']['PORT'],
-                'DATABASE_NAME': self._database_name,
-                'DATABASE_USER': self._database_name,
-                'DATABASE_PASSWORD': self._database_password,
+                "DATABASE_PORT": settings.DATABASES["default"]["PORT"],
+                "DATABASE_NAME": self._database_name,
+                "DATABASE_USER": self._database_name,
+                "DATABASE_PASSWORD": self._database_password,
             },
-            'name': self._task.id,
-            'privileged': False,
-            'network': settings.DBS_DOCKER_NETWORK,
-            'extra_hosts': {
-                'host.docker.internal': 'host-gateway',
-                'docker.for.mac.localhost': 'host-gateway'
-            }
+            "name": self._task.id,
+            "privileged": False,
+            "network": settings.DBS_DOCKER_NETWORK,
+            "extra_hosts": {"host.docker.internal": "host-gateway", "docker.for.mac.localhost": "host-gateway"},
         }
 
-        if not os.getenv('DOCKER'):
-            params['ports'] = {
-                '8000/tcp': '9050'
-            }
+        if not os.getenv("DOCKER"):
+            params["ports"] = {"8000/tcp": "9050"}
 
         container: Container = client.containers.run(**params)
         sleep(15)
@@ -107,22 +100,18 @@ class BasicJob:
 
         conditions = {}
         if self._public_only:
-            conditions['is_public'] = True
+            conditions["is_public"] = True
 
-        for scenario in self._task.assigment.scenarios.filter(**conditions).order_by('-priority'):
+        for scenario in self._task.assigment.scenarios.filter(**conditions).order_by("-priority"):
             logging.info("Executing scenario %s for the task %s", scenario.pk, self._task.pk)
 
-            if os.getenv('DOCKER'):
-                container_ip = container.attrs['NetworkSettings']['Networks'][settings.DBS_DOCKER_NETWORK]['IPAddress']
+            if os.getenv("DOCKER"):
+                container_ip = container.attrs["NetworkSettings"]["Networks"][settings.DBS_DOCKER_NETWORK]["IPAddress"]
                 url = f"http://{container_ip}:8000{scenario.url}"
             else:
                 url = f"http://127.0.0.1:9050{scenario.url}"
 
-            record = TaskRecord(
-                task=self._task,
-                scenario=scenario,
-                url=url
-            )
+            record = TaskRecord(task=self._task, scenario=scenario, url=url)
 
             s = Session()
             # retry = Retry(connect=6, backoff_factor=2)
@@ -161,9 +150,7 @@ class BasicJob:
                 else:
                     record.status = TaskRecord.Status.INVALID_HTTP_STATUS
                 record.message = str(e)
-                record.additional_data = {
-                    'status_code': r.status_code
-                }
+                record.additional_data = {"status_code": r.status_code}
                 record.save()
                 s.close()
                 continue
@@ -192,7 +179,8 @@ class BasicJob:
                 try:
                     record.response = json.dumps(
                         {key: response[key] for key in response if key not in (scenario.ignored_properties or [])},
-                        sort_keys=True, indent=4
+                        sort_keys=True,
+                        indent=4,
                     )
                 except TypeError:
                     record.response = json.dumps(response, sort_keys=True, indent=4)

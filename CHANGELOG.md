@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.11.0 : 2024-02-08
+
+- **Changed**: Django 5.0 upgrade
+- **Changed**: Use Debian-based containers
+
 ## 1.10.0 : 2023-05-16
 
 - **Changed**: Alpine Linux 3.18

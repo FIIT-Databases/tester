@@ -7,35 +7,36 @@ import uuid
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0004_assignment_database'),
+        ("core", "0004_assignment_database"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='task',
-            name='note',
+            model_name="task",
+            name="note",
             field=models.TextField(null=True),
         ),
         migrations.AlterField(
-            model_name='task',
-            name='executor',
-            field=models.CharField(choices=[('form', 'form'), ('job', 'job'), ('evaluation', 'evaluation')], default='form', max_length=15),
+            model_name="task",
+            name="executor",
+            field=models.CharField(
+                choices=[("form", "form"), ("job", "job"), ("evaluation", "evaluation")], default="form", max_length=15
+            ),
         ),
         migrations.CreateModel(
-            name='Evaluation',
+            name="Evaluation",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('links', models.FileField(storage=apps.core.models.base.PrivateFileStorage(), upload_to='')),
-                ('assignment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.assignment')),
-                ('tasks', models.ManyToManyField(to='core.task')),
+                ("id", models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("links", models.FileField(storage=apps.core.models.base.PrivateFileStorage(), upload_to="")),
+                ("assignment", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="core.assignment")),
+                ("tasks", models.ManyToManyField(to="core.task")),
             ],
             options={
-                'db_table': 'evaluations',
-                'default_permissions': ('add',),
+                "db_table": "evaluations",
+                "default_permissions": ("add",),
             },
         ),
     ]

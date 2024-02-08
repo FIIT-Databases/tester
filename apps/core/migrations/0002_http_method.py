@@ -4,30 +4,34 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0001_initial'),
+        ("core", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='scenario',
-            name='body',
-            field=models.JSONField(help_text='HTTP body', null=True),
+            model_name="scenario",
+            name="body",
+            field=models.JSONField(help_text="HTTP body", null=True),
         ),
         migrations.AddField(
-            model_name='scenario',
-            name='method',
-            field=models.CharField(choices=[('GET', 'GET'), ('POST', 'POST'), ('PUT', 'PUT'), ('PATCH', 'PATCH'), ('DELETE', 'DELETE')], default='GET', help_text='HTTP method', max_length=10),
+            model_name="scenario",
+            name="method",
+            field=models.CharField(
+                choices=[("GET", "GET"), ("POST", "POST"), ("PUT", "PUT"), ("PATCH", "PATCH"), ("DELETE", "DELETE")],
+                default="GET",
+                help_text="HTTP method",
+                max_length=10,
+            ),
         ),
         migrations.AlterField(
-            model_name='scenario',
-            name='is_public',
-            field=models.BooleanField(default=False, help_text='Scenario publicity'),
+            model_name="scenario",
+            name="is_public",
+            field=models.BooleanField(default=False, help_text="Scenario publicity"),
         ),
         migrations.AlterField(
-            model_name='scenario',
-            name='url',
-            field=models.CharField(help_text='Endpoint handle (/v1/hello)', max_length=200),
+            model_name="scenario",
+            name="url",
+            field=models.CharField(help_text="Endpoint handle (/v1/hello)", max_length=200),
         ),
     ]

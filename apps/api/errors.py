@@ -21,7 +21,7 @@ class ProblemDetailException(Exception):
         additional_data: Optional[dict] = None,
         detail_type: Optional[str] = None,
         detail: Optional[str] = None,
-        extra_headers: Optional[Tuple[Tuple]] = ()
+        extra_headers: Optional[Tuple[Tuple]] = (),
     ):
         super().__init__(title)
 
@@ -74,18 +74,16 @@ class ProblemDetailException(Exception):
 
     @property
     def payload(self) -> dict:
-        result = {
-            'title': self.title
-        }
+        result = {"title": self.title}
 
         if self.type:
-            result['type'] = self.type
+            result["type"] = self.type
 
         if self.detail:
-            result['detail'] = self.detail
+            result["detail"] = self.detail
 
         if settings.DEBUG:
-            result['trace'] = traceback.format_exc().split("\n")
+            result["trace"] = traceback.format_exc().split("\n")
 
         return result
 
@@ -96,10 +94,8 @@ class UnauthorizedException(ProblemDetailException):
             request,
             _("Unauthorized"),
             status=HTTPStatus.UNAUTHORIZED,
-            extra_headers=(
-                ('WWW-Authenticate', f'Bearer realm="{slugify(settings.INSTANCE_NAME)}"'),
-            ),
-            detail=detail
+            extra_headers=(("WWW-Authenticate", f'Bearer realm="{slugify(settings.INSTANCE_NAME)}"'),),
+            detail=detail,
         )
 
 
@@ -111,5 +107,5 @@ class ValidationException(ProblemDetailException):
     @property
     def payload(self) -> dict:
         payload = super(ValidationException, self).payload
-        payload['validation_errors'] = [item.to_dict() for item in self._form.errors]
+        payload["validation_errors"] = [item.to_dict() for item in self._form.errors]
         return payload

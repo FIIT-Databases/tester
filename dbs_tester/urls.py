@@ -24,10 +24,10 @@ from apps.api import urls as api_urlpatterns
 
 urlpatterns = []
 urlpatterns += [
-    path('rq/', include('django_rq.urls')),
-    path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path(r'api/v1/', include(api_urlpatterns)),
+    path("rq/", include("django_rq.urls")),
+    path("admin/", admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path(r"api/v1/", include(api_urlpatterns)),
 ]
 
 urlpatterns += web_urlpatterns

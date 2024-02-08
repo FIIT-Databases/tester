@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0009_alter_taskrecord_status'),
+        ("core", "0009_alter_taskrecord_status"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='scenario',
-            name='priority',
+            model_name="scenario",
+            name="priority",
             field=models.IntegerField(null=True),
         ),
     ]

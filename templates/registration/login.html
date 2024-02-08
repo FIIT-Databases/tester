@@ -1,6 +1,6 @@
 {% extends '_layout/base.html' %}
 {% load i18n %}
-{% load bootstrap5 %}
+{% load django_bootstrap5 %}
 
 {% block content %}
 	<h1>{% trans "Login" %}</h1>
@@ -10,11 +10,10 @@
 			<div class="col-lg-6">
 				{% csrf_token %}
 				{% bootstrap_form form %}
-				{% buttons %}
-					<div class="text-center">
-						<button type="submit" class="btn btn-primary btn-lg">{% translate "Submit" %}</button>
-					</div>
-				{% endbuttons %}
+				{% translate "Submit" as submit_content %}
+				<div class="text-center mb-3">
+					{% bootstrap_button button_type="submit" content=submit_content button_class="btn btn-primary btn-lg" %}
+				</div>
 			</div>
 		</div>
 	</form>

@@ -11,4 +11,4 @@ python3 manage.py setup
 
 echo "$GITHUB_TOKEN" | docker login ghcr.io -u $GITHUB_USER --password-stdin
 
-supervisord -c /etc/supervisord.conf
+supervisord -c /etc/supervisor/supervisord.conf

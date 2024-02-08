@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0003_task_output_alter_scenario_body_alter_task_message'),
+        ("core", "0003_task_output_alter_scenario_body_alter_task_message"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='assignment',
-            name='database',
+            model_name="assignment",
+            name="database",
             field=models.CharField(blank=True, max_length=100, null=True),
         ),
     ]

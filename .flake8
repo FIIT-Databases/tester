@@ -1,4 +1,0 @@
-[flake8]
-ignore = E203,W503,E704
-exclude = .git,.pytest_cache,venv,__pycache__,build,dist,docs,dbs_tester.egg-info,apps/core/models/__init__.py,apps/core/migrations,dbs_tester/settings
-max-line-length = 119

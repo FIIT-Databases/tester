@@ -14,11 +14,9 @@ class TaskDetailDiff(View):
         except Task.DoesNotExist:
             raise Http404()
 
-        return render(request, 'web/diff.html', {
-            'diff': task_record.diff
-        })
+        return render(request, "web/diff.html", {"diff": task_record.diff})
 
 
 __all__ = [
-    'TaskDetailDiff',
+    "TaskDetailDiff",
 ]

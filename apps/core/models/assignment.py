@@ -6,8 +6,8 @@ from apps.core.models.base import BaseModel
 
 class Assignment(BaseModel):
     class Meta:
-        app_label = 'core'
-        db_table = 'assignments'
+        app_label = "core"
+        db_table = "assignments"
         default_permissions = ()
 
     name = models.CharField(max_length=200)
@@ -18,6 +18,4 @@ class Assignment(BaseModel):
         return f"{self.name}"
 
 
-__all__ = [
-    'Assignment'
-]
+__all__ = ["Assignment"]

@@ -4,9 +4,7 @@ from apps.core.models import Assignment, Scenario, Task, TaskRecord
 
 
 class TaskAdmin(admin.ModelAdmin):
-    list_filter = (
-        'assigment__name',
-    )
+    list_filter = ("assigment__name",)
 
 
 admin.site.register(Assignment)

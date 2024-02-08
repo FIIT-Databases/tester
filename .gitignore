@@ -20,3 +20,4 @@ node_modules/
 docker-compose.yml
 /tmp/
 apps/web/static/
+requirements.txt

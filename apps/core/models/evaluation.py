@@ -9,9 +9,9 @@ from apps.core.models.base import BaseModel, private_storage
 
 class Evaluation(BaseModel):
     class Meta:
-        app_label = 'core'
-        db_table = 'evaluations'
-        default_permissions = ('add', )
+        app_label = "core"
+        db_table = "evaluations"
+        default_permissions = ("add",)
 
     def _upload_to_path(self, filename):
         return f"evaluations/{uuid.uuid4()}_{filename}"
@@ -27,6 +27,4 @@ class Evaluation(BaseModel):
         return f"{self.assignment.name} - {self.created_at.strftime('%Y-%m-%d')}"
 
 
-__all__ = [
-    'Evaluation'
-]
+__all__ = ["Evaluation"]

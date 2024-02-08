@@ -15,7 +15,7 @@ from apps.web.forms import TaskForm
 class CrateTaskView(LoginRequiredMixin, CreateView):
     model = Task
     form_class = TaskForm
-    template_name = 'web/task.html'
+    template_name = "web/task.html"
 
     def __init__(self):
         self.object = None
@@ -30,7 +30,7 @@ class CrateTaskView(LoginRequiredMixin, CreateView):
 
 class TaskArchiveView(LoginRequiredMixin, View):
     def get(self, request):
-        return render(request, 'web/archive.html')
+        return render(request, "web/archive.html")
 
 
 class TaskDetail(View):
@@ -39,12 +39,7 @@ class TaskDetail(View):
             task = Task.objects.get(pk=task_id)
         except Task.DoesNotExist:
             raise Http404()
-        return render(request, 'web/task_detail.html', {
-            'task': task
-        })
+        return render(request, "web/task_detail.html", {"task": task})
 
 
-__all__ = [
-    'CrateTaskView',
-    'TaskDetail'
-]
+__all__ = ["CrateTaskView", "TaskDetail"]

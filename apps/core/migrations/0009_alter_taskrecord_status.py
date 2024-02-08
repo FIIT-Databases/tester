@@ -4,15 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0008_ignored_properties_status'),
+        ("core", "0008_ignored_properties_status"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='taskrecord',
-            name='status',
-            field=models.CharField(choices=[('ok', 'OK'), ('invalid_json', 'parse error or invalid content-type'), ('invalid_http_status', 'invalid http status code'), ('timeout', 'timeout'), ('mismatch', 'response do not match'), ('error', '4xx or 500x')], max_length=20),
+            model_name="taskrecord",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("ok", "OK"),
+                    ("invalid_json", "parse error or invalid content-type"),
+                    ("invalid_http_status", "invalid http status code"),
+                    ("timeout", "timeout"),
+                    ("mismatch", "response do not match"),
+                    ("error", "4xx or 500x"),
+                ],
+                max_length=20,
+            ),
         ),
     ]

@@ -20,11 +20,11 @@ class LdapBackend(ModelBackend):
 
     def _ldap(self, username: str, password: str, auth_source: AuthSource) -> Optional[User]:
         config: LdapBackend.Config = auth_source.content
-        connection = ldap.initialize(uri=config['URI'])
+        connection = ldap.initialize(uri=config["URI"])
         connection.set_option(ldap.OPT_REFERRALS, 0)
 
         try:
-            connection.simple_bind_s(config['BIND'].format(username=username), password)
+            connection.simple_bind_s(config["BIND"].format(username=username), password)
         except ldap.LDAPError as e:
             logging.warning(
                 f"Unable to bind with external service (id={auth_source.pk}, name={auth_source.name}): {e}"
@@ -40,7 +40,7 @@ class LdapBackend(ModelBackend):
             user.set_unusable_password()
 
         result = connection.search(
-            f"{config['ROOT_DN']}", ldap.SCOPE_SUBTREE, config['FILTER'].format(username=username), ['*']
+            f"{config['ROOT_DN']}", ldap.SCOPE_SUBTREE, config["FILTER"].format(username=username), ["*"]
         )
 
         user_type, profiles = connection.result(result, 60)
@@ -49,7 +49,7 @@ class LdapBackend(ModelBackend):
             name, attrs = profiles[0]
 
             # LDAP properties
-            for model_property, ldap_property in config['USER_ATTR_MAP'].items():
+            for model_property, ldap_property in config["USER_ATTR_MAP"].items():
                 setattr(user, model_property, attrs[ldap_property][0].decode())
 
             user.last_login = timezone.now()
@@ -57,10 +57,10 @@ class LdapBackend(ModelBackend):
 
             # LDAP groups
             user.groups.clear()
-            for ldap_group in attrs.get('memberOf', []):
-                if ldap_group.decode() in config['GROUP_MAP']:
+            for ldap_group in attrs.get("memberOf", []):
+                if ldap_group.decode() in config["GROUP_MAP"]:
                     try:
-                        group = Group.objects.get(name=config['GROUP_MAP'][ldap_group.decode()])
+                        group = Group.objects.get(name=config["GROUP_MAP"][ldap_group.decode()])
                     except Group.DoesNotExist:
                         continue
                     user.groups.add(group)
@@ -81,7 +81,7 @@ class LdapBackend(ModelBackend):
         user = None
 
         for auth_source in AuthSource.objects.filter(is_active=True):
-            logging.debug(f'Checking {auth_source.name}')
+            logging.debug(f"Checking {auth_source.name}")
             if auth_source.driver == AuthSource.Driver.LDAP:
                 user = self._ldap(username, password, auth_source)
 

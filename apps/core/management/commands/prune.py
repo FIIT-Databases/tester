@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class Command(BaseCommand):
-    help = 'Prune unused docker containers/imagees'
+    help = "Prune unused docker containers/imagees"
 
     def handle(self, *args, **options):
         started_at = timezone.now()
@@ -12,10 +12,7 @@ class Command(BaseCommand):
 
         client = docker.from_env()
         client.containers.prune()
-        client.images.prune(filters={
-            'dangling': False,
-            'until': '5m'
-        })
+        client.images.prune(filters={"dangling": False, "until": "5m"})
 
         self.stdout.write(f"Finished: {timezone.now().isoformat()}")
         self.stdout.write(f"Duration: {timezone.now() - started_at}")

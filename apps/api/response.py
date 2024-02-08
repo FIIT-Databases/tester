@@ -18,16 +18,14 @@ class Ordering:
     columns: List[str]
 
     @classmethod
-    def create_from_request(cls, request, aliases: dict = None) -> 'Ordering':
+    def create_from_request(cls, request, aliases: dict = None) -> "Ordering":
         columns = []
         aliases = aliases or {}
 
-        for column in request.GET.get('order_by', 'created_at').split(','):
+        for column in request.GET.get("order_by", "created_at").split(","):
             column_name = column[1:] if column.startswith("-") else column
             if column_name in aliases.keys():
-                columns.append(
-                    f"-{aliases[column_name]}" if column.startswith("-") else aliases[column_name]
-                )
+                columns.append(f"-{aliases[column_name]}" if column.startswith("-") else aliases[column_name])
             else:
                 columns.append(column)
 
@@ -42,31 +40,30 @@ class Ordering:
 
 
 class GeneralResponse(HttpResponse):
-    def __init__(
-        self, request, data: Optional[Any] = None,
-        serializer: Type[Serializer] = None, **kwargs
-    ):
+    def __init__(self, request, data: Optional[Any] = None, serializer: Type[Serializer] = None, **kwargs):
         params = {}
         if data is not None:
-            content_types = str(request.headers.get('accept', 'application/json'))
-            content_types = content_types.replace(' ', '').split(',')
-            content_types = list(map(lambda r: r.split(';')[0], content_types))
+            content_types = str(request.headers.get("accept", "application/json"))
+            content_types = content_types.replace(" ", "").split(",")
+            content_types = list(map(lambda r: r.split(";")[0], content_types))
 
-            if any(x in ['*/*', 'application/json'] for x in content_types):
-                params['content_type'] = 'application/json'
-                params['content'] = json.dumps(data, cls=ApiJSONEncoder, serializer=serializer)
+            if any(x in ["*/*", "application/json"] for x in content_types):
+                params["content_type"] = "application/json"
+                params["content"] = json.dumps(data, cls=ApiJSONEncoder, serializer=serializer)
             else:
-                params['content_type'] = 'application/json'
-                params['status'] = HTTPStatus.NOT_ACCEPTABLE
-                params['content'] = json.dumps({
-                    'message': _("Not Acceptable"),
-                    'metadata': {
-                        'available': [
-                            'application/json',
-                        ],
-                        'asked': ', '.join(content_types)
+                params["content_type"] = "application/json"
+                params["status"] = HTTPStatus.NOT_ACCEPTABLE
+                params["content"] = json.dumps(
+                    {
+                        "message": _("Not Acceptable"),
+                        "metadata": {
+                            "available": [
+                                "application/json",
+                            ],
+                            "asked": ", ".join(content_types),
+                        },
                     }
-                })
+                )
 
         kwargs.update(params)
         super().__init__(**kwargs)
@@ -75,10 +72,10 @@ class GeneralResponse(HttpResponse):
 class SingleResponse(GeneralResponse):
     def __init__(self, request, data=None, **kwargs):
         if data is None:
-            kwargs['status'] = HTTPStatus.NO_CONTENT
+            kwargs["status"] = HTTPStatus.NO_CONTENT
         else:
             data = {
-                'response': data,
+                "response": data,
             }
         super().__init__(request=request, data=data, **kwargs)
 
@@ -88,7 +85,7 @@ class ErrorResponse(GeneralResponse):
         super().__init__(request=request, data=payload, **kwargs)
 
     @staticmethod
-    def create_from_exception(e: ProblemDetailException) -> 'ErrorResponse':
+    def create_from_exception(e: ProblemDetailException) -> "ErrorResponse":
         return ErrorResponse(e.request, e.payload, status=e.status, headers=e.extra_headers)
 
 
@@ -99,31 +96,29 @@ class ValidationResponse(GeneralResponse):
             "type": "/validation-error",
             "title": "Invalid request parameters",
             "status": HTTPStatus.UNPROCESSABLE_ENTITY,
-            'errors': payload,
+            "errors": payload,
         }
 
         super().__init__(request, data, status=HTTPStatus.UNPROCESSABLE_ENTITY, **kwargs)
 
     @staticmethod
-    def create_from_exception(e: ValidationException) -> 'ValidationResponse':
+    def create_from_exception(e: ValidationException) -> "ValidationResponse":
         return ValidationResponse(e.request, e.payload, status=HTTPStatus.UNPROCESSABLE_ENTITY)
 
 
 class PaginationResponse(GeneralResponse):
-    def __init__(
-        self, request, qs, ordering: Ordering = None, **kwargs
-    ):
-        kwargs.setdefault('content_type', 'application/json')
+    def __init__(self, request, qs, ordering: Ordering = None, **kwargs):
+        kwargs.setdefault("content_type", "application/json")
 
         # Ordering
         ordering = ordering if ordering else Ordering.create_from_request(request)
         qs = qs.order_by(*ordering.columns)
 
         # Pagination
-        paginate = request.GET.get('paginate', 'true') == 'true'
+        paginate = request.GET.get("paginate", "true") == "true"
         if paginate:
-            limit = int(request.GET.get('limit', settings.PAGINATION_DEFAULT_LIMIT))
-            page = int(request.GET.get('page', 1))
+            limit = int(request.GET.get("limit", settings.PAGINATION_DEFAULT_LIMIT))
+            page = int(request.GET.get("page", 1))
 
             paginator = Paginator(qs, limit)
 
@@ -132,11 +127,11 @@ class PaginationResponse(GeneralResponse):
             except EmptyPage as e:
                 raise ProblemDetailException(
                     request,
-                    title=_('Page not found'),
+                    title=_("Page not found"),
                     status=HTTPStatus.NOT_FOUND,
                     previous=e,
-                    detail_type='out_of_range',
-                    detail=_('That page contains no results')
+                    detail_type="out_of_range",
+                    detail=_("That page contains no results"),
                 )
 
             items = paginator.get_page(page)
@@ -149,23 +144,9 @@ class PaginationResponse(GeneralResponse):
             num_pages = 1
             total = qs.count()
 
-        data = {
-            'items': items,
-            'metadata': {
-                'page': page,
-                'limit': limit,
-                'pages': num_pages,
-                'total': total
-            }
-        }
+        data = {"items": items, "metadata": {"page": page, "limit": limit, "pages": num_pages, "total": total}}
 
         super().__init__(request, data, **kwargs)
 
 
-__all__ = [
-    "SingleResponse",
-    "ErrorResponse",
-    "PaginationResponse",
-    "ValidationResponse",
-    "Ordering"
-]
+__all__ = ["SingleResponse", "ErrorResponse", "PaginationResponse", "ValidationResponse", "Ordering"]
