@@ -10,7 +10,7 @@ class Command(BaseCommand):
         self._cron()
 
     def _cron(self):
-        cron = CronTab(user='root')
+        cron = CronTab(user="root")
         cron.remove_all()
 
         for command, schedule in settings.CRON_JOBS.items():

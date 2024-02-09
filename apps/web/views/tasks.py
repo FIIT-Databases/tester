@@ -22,9 +22,7 @@ class CrateTaskView(LoginRequiredMixin, CreateView):
         self.object = None
 
     def get_initial(self):
-        return {
-            'image': self.request.session.pop('task_form', {}).get('image', '')
-        }
+        return {"image": self.request.session.pop("task_form", {}).get("image", "")}
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
