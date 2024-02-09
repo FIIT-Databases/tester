@@ -54,9 +54,6 @@ RUN rm -f /etc/nginx/sites-enabled/default
 ## supervisord
 COPY conf/supervisor.conf /etc/supervisor/supervisord.conf
 
-## gunicorn
-# RUN mkdir /var/run/gunicorn
-
 # Health check
 HEALTHCHECK CMD curl --fail http://localhost:9000/api/v1/status || exit 1
 
