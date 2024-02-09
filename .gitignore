@@ -19,5 +19,7 @@ node_modules/
 ~*.docx
 docker-compose.yml
 /tmp/
-apps/web/static/
+/apps/web/static/
+!/apps/web/static/favicon.ico
+/static
 requirements.txt

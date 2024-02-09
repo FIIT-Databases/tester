@@ -8,3 +8,4 @@ dbs_tester.egg-info/
 .flake8
 .gitignore
 tmp/
+static/
