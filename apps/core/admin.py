@@ -1,8 +1,9 @@
 from django.contrib import admin
+from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext as _
 
-from apps.core.models import Assignment, Scenario, Task, TaskRecord
+from apps.core.models import Assignment, Scenario, Task, TaskRecord, Evaluation
 
 
 def get_related_field(name, admin_order_field=None, short_description=None):
@@ -48,6 +49,44 @@ class TaskRecordAdmin(RelatedFieldAdmin):
     show_facets = admin.ShowFacets.ALWAYS
 
 
+class EvaluationAdmin(RelatedFieldAdmin):
+    list_display = ("id", "created_at", "assignment", "status", "protocol")
+    readonly_fields = ("created_at", "tasks", "id")
+    exclude = ("creator",)
+    list_filter = ("assignment__name",)
+    show_facets = admin.ShowFacets.ALWAYS
+
+    def save_form(self, request, form, change):
+        obj = super().save_form(request, form, change)
+        if not change:
+            obj.creator = request.user
+        return obj
+
+    @admin.display(description=_("Status"))
+    def status(self, obj):
+        done = obj.tasks.filter(status=Task.Status.DONE).count()
+        pending = obj.tasks.filter(status=Task.Status.PENDING).count()
+        failed = obj.tasks.filter(status=Task.Status.FAILED).count()
+        return format_html(
+            '<strong style="color: green;">{0}</strong> - '
+            '<strong style="color: red;">{1}</strong> - '
+            '<strong style="color: blue;">{2}</strong>',
+            done,
+            failed,
+            pending,
+        )
+
+    @admin.display(description=_("Protocol"))
+    def protocol(self, obj):
+        if obj.is_done():
+            return format_html(
+                '<a href="{0}" target="_blank">Download</a>',
+                reverse("evaluation-result", kwargs={"evaluation_id": obj.pk}),
+            )
+        else:
+            return ""
+
+
 class AssignmentAdmin(admin.ModelAdmin):
     show_facets = admin.ShowFacets.ALWAYS
 
@@ -61,3 +100,4 @@ admin.site.register(Assignment, AssignmentAdmin)
 admin.site.register(Scenario, ScenarioAdmin)
 admin.site.register(Task, TaskAdmin)
 admin.site.register(TaskRecord, TaskRecordAdmin)
+admin.site.register(Evaluation, EvaluationAdmin)

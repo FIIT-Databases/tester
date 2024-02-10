@@ -4,96 +4,99 @@
 {% load i18n %}
 
 {% block body %}
-	<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-		<div class="container-fluid">
-			<button
-				class="navbar-toggler"
-				type="button"
-				data-bs-toggle="collapse"
-				data-bs-target="#navbarToggler"
-				aria-controls="navbarToggler"
-				aria-expanded="false"
-				aria-label="Toggle navigation"
-			>
-				<span class="navbar-toggler-icon"></span>
-			</button>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+				<div class="container-fluid">
+						<button
+								class="navbar-toggler"
+								type="button"
+								data-bs-toggle="collapse"
+								data-bs-target="#navbarToggler"
+								aria-controls="navbarToggler"
+								aria-expanded="false"
+								aria-label="Toggle navigation"
+						>
+								<span class="navbar-toggler-icon"></span>
+						</button>
 
-			<div class="collapse navbar-collapse" id="navbarToggler">
-				<a class="navbar-brand" href="{% url 'dashboard' %}">
-					<i class="bi bi-server"></i>
-					FIIT DBS
-				</a>
+						<div class="collapse navbar-collapse" id="navbarToggler">
+								<a class="navbar-brand" href="{% url 'dashboard' %}">
+										<i class="bi bi-server"></i>
+										FIIT DBS
+								</a>
 
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-				</ul>
+								<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+								</ul>
 
-				<ul class="navbar-nav mb-2 mb-lg-0">
-					{% if user.is_authenticated %}
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-								<i class="bi bi-person"></i>
-								{{ user.username }}
-							</a>
-							<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-{#								<li>#}
-{#									<a class="dropdown-item" href="{% url 'task-archive' %}">{% translate "Archive" %}</a>#}
-{#								</li>#}
-								{% if user.is_staff %}
-									<li>
-										<a class="dropdown-item" href="{% url 'admin:index' %}">{% translate "Admin" %}</a>
-									</li>
-									<li>
-										<a class="dropdown-item" href="{% url 'evaluation-overview' %}">{% translate "Evaluations" %}</a>
-									</li>
-								{% endif %}
-								<li>
-										<form method="post" action="{% url 'logout' %}">
-												{% csrf_token %}
-												<button class="dropdown-item" type="submit">{% translate "Logout" %}</button>
-										</form>
-								</li>
-							</ul>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'task-new' %}">
-								<i class="bi bi-plus-lg"></i>
-								{% translate "New test" %}
-							</a>
-						</li>
-					{% else %}
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'login' %}">
-								<i class="bi bi-key"></i>
-								{% translate "Login" %}
-							</a>
-						</li>
-					{% endif %}
-				</ul>
+								<ul class="navbar-nav mb-2 mb-lg-0">
+										{% if user.is_authenticated %}
+												<li class="nav-item dropdown">
+														<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+															 data-bs-toggle="dropdown" aria-expanded="false">
+																<i class="bi bi-person"></i>
+																{{ user.username }}
+														</a>
+														<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+																{#								<li>#}
+																{#									<a class="dropdown-item" href="{% url 'task-archive' %}">{% translate "Archive" %}</a>#}
+																{#								</li>#}
+																{% if user.is_staff %}
+																		<li>
+																				<a class="dropdown-item"
+																					 href="{% url 'admin:index' %}">{% translate "Admin" %}</a>
+																		</li>
+																{% endif %}
+																<li>
+																		<a class="dropdown-item"
+																			 href="{% url 'history' %}">{% translate "History" %}</a>
+																</li>
+																<li>
+																		<form method="post" action="{% url 'logout' %}">
+																				{% csrf_token %}
+																				<button class="dropdown-item" type="submit">{% translate "Logout" %}</button>
+																		</form>
+																</li>
+														</ul>
+												</li>
+												<li class="nav-item">
+														<a class="nav-link" href="{% url 'task-new' %}">
+																<i class="bi bi-plus-lg"></i>
+																{% translate "New test" %}
+														</a>
+												</li>
+										{% else %}
+												<li class="nav-item">
+														<a class="nav-link" href="{% url 'login' %}">
+																<i class="bi bi-key"></i>
+																{% translate "Login" %}
+														</a>
+												</li>
+										{% endif %}
+								</ul>
 
-			</div>
-		</div>
-	</nav>
+						</div>
+				</div>
+		</nav>
 
-	<main role="main" class="container">
-		{% block content %}{% endblock %}
-	</main>
+		<main role="main" class="container">
+				{% block content %}{% endblock %}
+		</main>
 
-	<footer class="footer">
-      <div class="container">
-		  <div class="row">
-			  <div class="col-md-6 text-start">
-				  <span class="text-muted">FIIT STU &copy; 2022-2024</span>
-			  </div>
-			  <div class="col-md-6 text-end">
+		<footer class="footer">
+				<div class="container">
+						<div class="row">
+								<div class="col-md-6 text-start">
+										<span class="text-muted">FIIT STU &copy; 2022-2024</span>
+								</div>
+								<div class="col-md-6 text-end">
 				  <span class="text-muted">
 					  {{ VERSION }} - {{ BUILD }}
 					  (<a href="{% url 'changelog' %}">{% trans 'changelog' %}</a>)
 				  </span>
-					<a href="https://github.com/FIIT-Databases/tester" target="_blank">
-						<i class="bi bi-github"></i>
-					</a>
-			  </div>
-		  </div>
-      </div>
-    </footer>
+										<a href="https://github.com/FIIT-Databases/tester" target="_blank">
+												<i class="bi bi-github"></i>
+										</a>
+								</div>
+						</div>
+				</div>
+		</footer>
 {% endblock %}

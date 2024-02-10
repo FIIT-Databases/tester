@@ -1,10 +1,13 @@
 # Changelog
 
-## 1.11.0 : 2024-02-08
+## 1.11.0 : 2024-02-10
 
 - **Added**: [Save and prefill image on new test #5](https://github.com/FIIT-Databases/tester/issues/5)
 - **Added**: Cool FIIT favicon (super important)
 - **Added**: Advanced admin filters
+- **Added**: [Basic job history](https://github.com/FIIT-Databases/tester/issues/3)
+- **Added**: Creator in Evaluation
+- **Changed**: Evaluations are managed from Django admin now
 - **Changed**: Django 5.0 upgrade
 - **Changed**: Use Debian-based containers
 

@@ -1,0 +1,40 @@
+{% extends '_layout/base.html' %}
+{% load i18n %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+		<div class="row">
+				<div class="col-lg-10">
+						<h1>{% trans "History" %}</h1>
+				</div>
+		</div>
+
+		<div class="row">
+				<div class="col-lg-12">
+						<table class="table">
+								<thead>
+								<tr>
+										<th data-field="name">{% trans 'Created at' %}</th>
+										<th data-field="name">{% trans 'Name' %}</th>
+										<th data-field="assignment">{% trans 'Status' %}</th>
+										<th data-field="actions">{% trans 'Viewer' %}</th>
+								</tr>
+								</thead>
+								<tbody>
+								{% for task in tasks %}
+										<tr>
+												<td>{{ task.created_at }}</td>
+												<td>{{ task.assigment.name }}</td>
+												<td>{{ task.status }}</td>
+												<td>
+														<a href="{% url 'task-detail' task.id %}" target="_blank">
+																{% trans 'Show' %}
+														</a>
+												</td>
+										</tr>
+								{% endfor %}
+								</tbody>
+						</table>
+				</div>
+		</div>
+{% endblock %}
