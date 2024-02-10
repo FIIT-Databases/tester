@@ -25,7 +25,7 @@ class Scenario(BaseModel):
     assigment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name="scenarios")
     url = models.CharField(max_length=200, help_text=_("Endpoint handle (/v1/hello)"))
     method = models.CharField(choices=Method.choices, help_text=_("HTTP method"), max_length=10, default=Method.GET)
-    response = models.JSONField()
+    response = models.JSONField(null=True)
     body = models.JSONField(null=True, help_text=_("HTTP body"), blank=True)
     ignored_properties = ArrayField(models.CharField(max_length=50), null=True)
     status_code = models.SmallIntegerField(default=HTTPStatus.OK)

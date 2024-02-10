@@ -4,7 +4,6 @@ import os
 import random
 import string
 from difflib import HtmlDiff
-from http import HTTPStatus
 from json import JSONDecodeError
 from time import sleep
 from typing import Optional
@@ -111,7 +110,7 @@ class BasicJob:
             else:
                 url = f"http://127.0.0.1:9050{scenario.url}"
 
-            record = TaskRecord(task=self._task, scenario=scenario, url=url)
+            record = TaskRecord(task=self._task, scenario=scenario, url=url, status=TaskRecord.Status.OK)
 
             s = Session()
             # retry = Retry(connect=6, backoff_factor=2)
@@ -130,78 +129,55 @@ class BasicJob:
                 r = s.send(req.prepare(), timeout=settings.DBS_TESTER_TIMEOUT)
             except Timeout as e:
                 record.status = TaskRecord.Status.TIMEOUT
-                record.message = str(e)
+                record.messages.append(str(e))
                 record.save()
                 continue
             except BaseException as e:
                 record.status = TaskRecord.Status.ERROR
-                record.message = str(e)
+                record.messages.append(str(e))
                 record.save()
                 continue
 
             record.duration = r.elapsed
-
-            try:
-                r.raise_for_status()
-            except HTTPError as e:
-                record.response = r.content
-                if r.status_code == scenario.status_code:
-                    record.status = TaskRecord.Status.OK
-                else:
-                    record.status = TaskRecord.Status.INVALID_HTTP_STATUS
-                record.message = str(e)
-                record.additional_data = {"status_code": r.status_code}
-                record.save()
-                s.close()
-                continue
+            record.response = r.content
 
             if r.status_code != scenario.status_code:
-                record.response = r.content
-                record.status = TaskRecord.Status.INVALID_HTTP_STATUS
-                record.message = str(TaskRecord.Status.INVALID_HTTP_STATUS)
-                record.save()
-                s.close()
-                continue
+                record.status = TaskRecord.Status.INVALID
+                record.messages.append(
+                    f"Invalid HTTP Status code (received={r.status_code}, expected={scenario.status_code})"
+                )
 
-            if r.status_code != HTTPStatus.NO_CONTENT:
+            if r.content:
                 try:
                     response = r.json()
+                    try:
+                        record.response = json.dumps(
+                            {key: response[key] for key in response if key not in (scenario.ignored_properties or [])},
+                            sort_keys=True,
+                            indent=4,
+                        )
+                    except TypeError:
+                        record.response = json.dumps(response, sort_keys=True, indent=4)
+
+                    valid_response = json.dumps(scenario.response, sort_keys=True, indent=4)
+
+                    if record.response != valid_response:
+                        valid_lines = valid_response.splitlines(keepends=True)
+                        response_lines = record.response.splitlines(keepends=True)
+                        d = HtmlDiff()
+                        record.diff_type = TaskRecord.DiffType.HTML
+                        record.diff = d.make_table(
+                            valid_lines,
+                            response_lines,
+                            fromdesc=_("Valid response"),
+                            todesc=_("Your response"),
+                        )
+                        record.status = TaskRecord.Status.INVALID
+                        record.messages.append(f"JSON Mismatch")
                 except (InvalidJSONError, JSONDecodeError) as e:
-                    record.response = r.content
-                    record.status = TaskRecord.Status.INVALID_JSON
-                    record.message = str(e)
-                    record.save()
-                    s.close()
-                    continue
-
-                s.close()
-
-                try:
-                    record.response = json.dumps(
-                        {key: response[key] for key in response if key not in (scenario.ignored_properties or [])},
-                        sort_keys=True,
-                        indent=4,
-                    )
-                except TypeError:
-                    record.response = json.dumps(response, sort_keys=True, indent=4)
-
-                valid_response = json.dumps(scenario.response, sort_keys=True, indent=4)
-
-                if record.response == valid_response:
-                    record.status = TaskRecord.Status.OK
-                else:
-                    valid_lines = valid_response.splitlines(keepends=True)
-                    response_lines = record.response.splitlines(keepends=True)
-                    d = HtmlDiff()
-                    record.diff_type = TaskRecord.DiffType.HTML
-                    record.diff = d.make_table(
-                        valid_lines,
-                        response_lines,
-                        fromdesc=_("Valid response"),
-                        todesc=_("Your response"),
-                    )
-                    record.status = TaskRecord.Status.MISMATCH
-
+                    record.status = TaskRecord.Status.INVALID
+                    record.messages.append("Invalid JSON")
+                    record.additional_data["exception"] = str(e)
                 record.save()
 
         self._task.status = Task.Status.DONE

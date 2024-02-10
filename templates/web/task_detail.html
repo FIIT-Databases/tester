@@ -2,125 +2,117 @@
 {% load i18n %}
 
 {% block head %}
-	{% if task.status == task.Status.PENDING %}
-		<meta http-equiv="refresh" content="5">
-	{% endif %}
+		{% if task.status == task.Status.PENDING %}
+				<meta http-equiv="refresh" content="5">
+		{% endif %}
 {% endblock %}
 
 {% block content %}
-	<h1>{% trans "Test results" %}</h1>
-	<div class="row">
-		<div class="col-lg-5">
-			<div class="card mb-4">
-				<div class="card-header">
-					{% trans "General detail" %}
-				</div>
-				<div class="card-body">
-					<ul class="list-group list-group-flush">
-						<li class="list-group-item">
-							<strong>{% trans "UUID" %}: </strong>
-							{{ task.pk }}
-						</li>
-						<li class="list-group-item">
-							<strong>{% trans "Status" %}: </strong>
-							<span class="badge {% if task.status == task.Status.DONE %}bg-success{% elif task.status == task.Status.FAILED %}bg-danger{% else %}bg-warning{% endif %}">
+		<h1>{% trans "Test results" %}</h1>
+		<div class="row">
+				<div class="col-lg-5">
+						<div class="card mb-4">
+								<div class="card-header">
+										{% trans "General detail" %}
+								</div>
+								<div class="card-body">
+										<ul class="list-group list-group-flush">
+												<li class="list-group-item">
+														<strong>{% trans "UUID" %}: </strong>
+														{{ task.pk }}
+												</li>
+												<li class="list-group-item">
+														<strong>{% trans "Status" %}: </strong>
+														<span
+																class="badge {% if task.status == task.Status.DONE %}bg-success{% elif task.status == task.Status.FAILED %}bg-danger{% else %}bg-warning{% endif %}">
 								{{ task.status }}
 							</span>
-						</li>
-						<li class="list-group-item">
-							<strong>{% trans "User" %}: </strong>
-							{{ task.user.username }}
-						</li>
-						<li class="list-group-item">
-							<strong>{% trans "Image" %}: </strong>
-							{{ task.image }}
-						</li>
-						<li class="list-group-item">
-							<strong>{% trans "Created at" %}: </strong>
-							{{ task.created_at }}
-						</li>
-						{% if task.message %}
-							<li class="list-group-item">
-								<strong>{% trans "Message" %}: </strong>
-								{{ task.message }}
-							</li>
-						{% endif %}
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-7">
-			<div class="card mb-4">
-				<div class="card-header">
-					{% trans "Container output" %}
-				</div>
-				<div class="card-body">
-					<pre>{{ task.output }}</pre>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	{% if task.status == task.Status.DONE %}
-		<h2>{% trans "Scenarios" %}</h2>
-		{% for task_record in task.records.all %}
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="card mb-4">
-						<div class="card-header">
-							{% trans "Scenario detail" %}
+												</li>
+												<li class="list-group-item">
+														<strong>{% trans "User" %}: </strong>
+														{{ task.user.username }}
+												</li>
+												<li class="list-group-item">
+														<strong>{% trans "Image" %}: </strong>
+														{{ task.image }}
+												</li>
+												<li class="list-group-item">
+														<strong>{% trans "Created at" %}: </strong>
+														{{ task.created_at }}
+												</li>
+										</ul>
+								</div>
 						</div>
-						<div class="card-body">
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item">
-									<strong>{% trans "UUID" %}: </strong>
-									{{ task_record.pk }}
-								</li>
-								<li class="list-group-item">
-									<strong>{% trans "Scenario" %}: </strong>
-									{{ task_record.scenario_id }}
-								</li>
-								<li class="list-group-item">
-									<strong>{% trans "Status" %}: </strong>
-									<span class="badge {% if task_record.status == task_record.Status.OK %}bg-success{% else %}bg-danger{% endif %}">
+				</div>
+				<div class="col-lg-7">
+						<div class="card mb-4">
+								<div class="card-header">
+										{% trans "Container output" %}
+								</div>
+								<div class="card-body">
+										<pre>{{ task.output }}</pre>
+								</div>
+						</div>
+				</div>
+		</div>
+
+		{% if task.status == task.Status.DONE %}
+				<h2>{% trans "Scenarios" %}</h2>
+				{% for task_record in task.records.all %}
+						<div class="row">
+								<div class="col-lg-12">
+										<div class="card mb-4">
+												<div class="card-header">
+														{{ task_record.scenario.method }} {{ task_record.scenario.url }}
+												</div>
+												<div class="card-body">
+														<ul class="list-group list-group-flush">
+																<li class="list-group-item">
+																		<strong>{% trans "UUID" %}: </strong>
+																		{{ task_record.pk }}
+																</li>
+																<li class="list-group-item">
+																		<strong>{% trans "Scenario" %}: </strong>
+																		{{ task_record.scenario_id }}
+																</li>
+																<li class="list-group-item">
+																		<strong>{% trans "Status" %}: </strong>
+																		<span
+																				class="badge {% if task_record.status == task_record.Status.OK %}bg-success{% else %}bg-danger{% endif %}">
 										{{ task_record.status }}
 									</span>
-								</li>
-								<li class="list-group-item">
-									<strong>{% trans "URL" %}: </strong>
-									{{ task_record.url }}
-								</li>
-								{% if task_record.message %}
-									<li class="list-group-item">
-										<strong>{% trans "Message" %}: </strong>
-										{{ task_record.message }}
-									</li>
-								{% endif %}
-								<li class="list-group-item">
-									<strong>{% trans "Duration" %}: </strong>
-									{{ task_record.duration }}
-								</li>
-								{% if task_record.status == task_record.Status.MISMATCH %}
-									{% if task_record.diff_type == task_record.DiffType.FILE %}
-										<li class="list-group-item">
-											<strong>{% trans "Diff viewer" %}: </strong>
-											<a href="{% url 'task-record-diff' task_record.pk %}" target="_blank">
-												{{ task_record.pk }}.diff
-											</a>
-										</li>
-									{% else %}
-										<div style="max-width: 100%">
-											{% autoescape off %}
-												{{ task_record.diff }}
-											{% endautoescape %}
+																</li>
+																<li class="list-group-item">
+																		<strong>{% trans "Duration" %}: </strong>
+																		{{ task_record.duration }}
+																</li>
+																{% if task_record.messages %}
+																		{% for message in task_record.messages %}
+																				<li class="list-group-item">⚠️ {{ message }}</li>
+																		{% endfor %}
+																{% endif %}
+																{% if task_record.status == task_record.Status.INVALID %}
+																		{% if task_record.diff_type == task_record.DiffType.FILE %}
+																				<li class="list-group-item">
+																						<strong>{% trans "Diff viewer" %}: </strong>
+																						<a href="{% url 'task-record-diff' task_record.pk %}" target="_blank">
+																								{{ task_record.pk }}.diff
+																						</a>
+																				</li>
+																		{% endif %}
+																{% endif %}
+														</ul>
+												{% if task_record.diff_type == task_record.DiffType.HTML and task_record.diff %}
+														<div style="max-width: 100%; overflow: auto;">
+																{% autoescape off %}
+																		{{ task_record.diff }}
+																{% endautoescape %}
+														</div>
+												{% endif %}
+												</div>
 										</div>
-									{% endif %}
-								{% endif %}
-							</ul>
+								</div>
 						</div>
-					</div>
-				</div>
-			</div>
-		{% endfor %}
-	{% endif %}
+				{% endfor %}
+		{% endif %}
 {% endblock %}

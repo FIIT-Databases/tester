@@ -7,7 +7,9 @@
 - **Added**: Advanced admin filters
 - **Added**: [Basic job history](https://github.com/FIIT-Databases/tester/issues/3)
 - **Added**: Creator in Evaluation
+- **Added**: [Show request method #4](https://github.com/FIIT-Databases/tester/issues/4)
 - **Changed**: Evaluations are managed from Django admin now
+- **Changed**: Major task record logging refactor (messages introduced)
 - **Changed**: Django 5.0 upgrade
 - **Changed**: Use Debian-based containers
 

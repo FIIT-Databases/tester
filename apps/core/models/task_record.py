@@ -15,10 +15,8 @@ class TaskRecord(BaseModel):
 
     class Status(models.TextChoices):
         OK = "ok", _("OK")
-        INVALID_JSON = "invalid_json", _("parse error or invalid content-type")
-        INVALID_HTTP_STATUS = "invalid_http_status", _("invalid http status code")
-        TIMEOUT = "timeout", _("timeout")
-        MISMATCH = "mismatch", _("response do not match")
+        INVALID = "invalid", _("Invalid")
+        TIMEOUT = "timeout", _("Timeout")
         ERROR = "error", _("4xx or 500x")
 
     class DiffType(models.TextChoices):
@@ -32,7 +30,7 @@ class TaskRecord(BaseModel):
     response = models.TextField(null=True)
     diff = models.TextField(null=True)
     diff_type = models.TextField(choices=DiffType.choices, max_length=15, null=True)
-    message = models.TextField()
+    messages = models.JSONField(default=list)
     duration = models.DurationField(null=True)
     additional_data = models.JSONField(default=dict)
 
