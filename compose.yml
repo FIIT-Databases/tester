@@ -1,0 +1,49 @@
+name: dbs-tester
+
+services:
+  server:
+    build:
+      context: .
+      target: server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - private_volume:/usr/local/app/private
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USER: ${DATABASE_USER}
+      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      GITHUB_USER: ${GITHUB_USER}
+      REDIS_HOST: ${REDIS_HOST}
+      SECRET_KEY: ${SECRET_KEY}
+    ports:
+      - 8000:9000
+  worker:
+    build:
+      context: .
+      target: worker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_USER: ${DATABASE_USER}
+      DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      GITHUB_USER: ${GITHUB_USER}
+      REDIS_HOST: ${REDIS_HOST}
+      SECRET_KEY: ${SECRET_KEY}
+    scale: 4
+    depends_on:
+      - server
+networks:
+  intranet:
+    name: dbs
+    external: true
+volumes:
+  private_volume:

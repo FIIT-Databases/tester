@@ -33,24 +33,18 @@ Application use these environments variables:
 
 ### Docker
 
-Pre-build Docker image is available on GitHub Container registry as
-[ghcr.io/fiit-databases/tester:master](https://github.com/FIIT-Databases/tester/pkgs/container/tester).
+Dockerfile contains two targets which are pre-build and available on GitHub Container registry:
 
-To run the image as a container you can use command bellow (keep in mind that you have to specify the environment
-variables accordingly). The logs from container are present in the `/var/log` so you have to create a volume to access
-them (present in the example).
+- [ghcr.io/fiit-databases/tester-server:master](https://github.com/FIIT-Databases/tester/pkgs/container/tester-server)
+- [ghcr.io/fiit-databases/tester-worker:master](https://github.com/FIIT-Databases/tester/pkgs/container/tester-worker)
 
-The container requires access to the Docker environment that's why you have to create volume, which maps a path to the
+Example of configuration is present in `compose.yml`.
+
+The containers require access to the Docker environment that's why you have to create volume, which maps a path to the
 Docker socket.
 
 Docker network have to be created and provided to the application using `DBS_DOCKER_NETWORK` environment variable.
 Network `dbs` is used in the example
-
-```shell
-docker run -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v ./logs:/var/log/ --env BASE_URL= --env ALLOWED_HOSTS= --env DATABASE_HOST= --env DATABASE_NAME= --env DATABASE_PASSWORD= --env DATABASE_PORT= --env DATABASE_USER= --env DJANGO_SETTINGS_MODULE=dbs_tester.settings.production --env REDIS_HOST= --env SECRET_KEY= --env GITHUB_TOKEN= --env GITHUB_USER= --name dbs-tester --network dbs --add-host=host.docker.internal:host-gateway ghcr.io/fiit-databases/tester:master
-```
-
-Server started on port 9000.
 
 Repository contains an example of the **systemd unit script** in the `conf/tester-dbs.service`.
 

@@ -2,12 +2,17 @@
 
 ## 1.11.0 : 2024-02-10
 
+Bunch of funky updates into an upcoming summer course! Some attempts were made to make the task result better readable.
+Improved scalability moving `worker` outside of the server image and `supervisord` service.
+Be a good frogs! 🐸
+
 - **Added**: [Save and prefill image on new test #5](https://github.com/FIIT-Databases/tester/issues/5)
 - **Added**: Cool FIIT favicon (super important)
 - **Added**: Advanced admin filters
 - **Added**: [Basic job history](https://github.com/FIIT-Databases/tester/issues/3)
 - **Added**: Creator in Evaluation
 - **Added**: [Show request method #4](https://github.com/FIIT-Databases/tester/issues/4)
+- **Changed**: Dockerfile separated into two targets: `server` and `worker` so `worker` can be scaled
 - **Changed**: Evaluations are managed from Django admin now
 - **Changed**: Major task record logging refactor (messages introduced)
 - **Changed**: Django 5.0 upgrade
