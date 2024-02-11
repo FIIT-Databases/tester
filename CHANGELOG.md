@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.11.0 : 2024-02-10
+## 1.11.0 : 2024-02-11
 
 Bunch of funky updates into an upcoming summer course! Some attempts were made to make the task result better readable.
 Improved scalability moving `worker` outside of the server image and `supervisord` service.

@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class Command(BaseCommand):
-    help = "Prune unused docker containers/imagees"
+    help = "Prune unused docker containers/images"
 
     def handle(self, *args, **options):
         started_at = timezone.now()

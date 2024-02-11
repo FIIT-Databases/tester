@@ -43,9 +43,6 @@ Example of configuration is present in `compose.yml`.
 The containers require access to the Docker environment that's why you have to create volume, which maps a path to the
 Docker socket.
 
-Docker network have to be created and provided to the application using `DBS_DOCKER_NETWORK` environment variable.
-Network `dbs` is used in the example
-
 Repository contains an example of the **systemd unit script** in the `conf/tester-dbs.service`.
 
 ### From source
@@ -68,4 +65,4 @@ For more information check the `docs` directory.
 ---
 ![](docs/fiit.png)
 
-Made with ❤️ and ☕️ FIIT STU (c) 2022-2023
+Made with ❤️ and ☕️ FIIT STU (c) 2022-2024
