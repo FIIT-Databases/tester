@@ -27,7 +27,7 @@ porcupine-python = "^0.5.0"
 django-api-forms = "1.0.0rc9"
 
 [tool.poetry.dev-dependencies]
-black = "^23.12.1"
+black = "^24.0"
 
 [tool.black]
 line-length = 119
