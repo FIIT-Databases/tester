@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.1 : 2024-02-25
+
+- **Fixed**: [Validate Docker image path #6](https://github.com/FIIT-Databases/tester/issues/6)
+
 ## 1.11.0 : 2024-02-11
 
 Bunch of funky updates into an upcoming summer course! Some attempts were made to make the task result better readable.

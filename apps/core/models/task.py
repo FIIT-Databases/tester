@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.core.models.assignment import Assignment
 from apps.core.models.base import BaseModel
+from apps.core.validators import OptionalSchemeURLValidator
 
 
 class Task(BaseModel):
@@ -32,6 +33,7 @@ class Task(BaseModel):
         help_text=_("Path to GitHub hosted docker image. Example: ghcr.io/fiit-databases/dbs-python-example:master"),
         verbose_name=_("Docker Image"),
         max_length=255,
+        validators=[OptionalSchemeURLValidator()],
     )
     message = models.TextField(null=True, editable=False)
     output = models.TextField(null=True, editable=False)
