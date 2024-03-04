@@ -51,7 +51,13 @@ def execute_tasks(sender, instance: Evaluation, created: bool, **kwargs):
                 )
                 instance.tasks.add(task)
                 jobs.append(
-                    Queue.prepare_data(basic_job, (task.pk, False, ))
+                    Queue.prepare_data(
+                        basic_job,
+                        (
+                            task.pk,
+                            False,
+                        ),
+                    )
                 )
         django_rq.get_queue("default").enqueue_many(jobs)
 

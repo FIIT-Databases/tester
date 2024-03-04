@@ -92,17 +92,25 @@ class EvaluationAdmin(ExtraButtonsMixin, RelatedFieldAdmin):
         else:
             return ""
 
-    @button(html_attrs={'style': 'background-color:#88FF88;color:black'})
+    @button(html_attrs={"style": "background-color:#88FF88;color:black"})
     def recreate_queue(self, request):
         django_rq.get_queue("default").empty()
         jobs = []
 
         for task in Task.objects.filter(status=Task.Status.PENDING):
-            jobs.append(Queue.prepare_data(basic_job, (task.pk, False, )))
+            jobs.append(
+                Queue.prepare_data(
+                    basic_job,
+                    (
+                        task.pk,
+                        False,
+                    ),
+                )
+            )
 
         django_rq.get_queue("default").enqueue_many(jobs)
 
-        self.message_user(request, 'Pending tasks were added back to queue')
+        self.message_user(request, "Pending tasks were added back to queue")
         return HttpResponseRedirectToReferrer(request)
 
 
