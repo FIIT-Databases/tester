@@ -1,8 +1,14 @@
+import django_rq
+from admin_extra_buttons.decorators import button
+from admin_extra_buttons.mixins import ExtraButtonsMixin
+from admin_extra_buttons.utils import HttpResponseRedirectToReferrer
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext as _
+from rq import Queue
 
+from apps.core.jobs import basic_job
 from apps.core.models import Assignment, Scenario, Task, TaskRecord, Evaluation
 
 
@@ -49,7 +55,7 @@ class TaskRecordAdmin(RelatedFieldAdmin):
     show_facets = admin.ShowFacets.ALWAYS
 
 
-class EvaluationAdmin(RelatedFieldAdmin):
+class EvaluationAdmin(ExtraButtonsMixin, RelatedFieldAdmin):
     list_display = ("id", "created_at", "assignment", "status", "protocol")
     readonly_fields = ("created_at", "tasks", "id")
     exclude = ("creator",)
@@ -85,6 +91,19 @@ class EvaluationAdmin(RelatedFieldAdmin):
             )
         else:
             return ""
+
+    @button(html_attrs={'style': 'background-color:#88FF88;color:black'})
+    def recreate_queue(self, request):
+        django_rq.get_queue("default").empty()
+        jobs = []
+
+        for task in Task.objects.filter(status=Task.Status.PENDING):
+            jobs.append(Queue.prepare_data(basic_job, (task.pk, False, )))
+
+        django_rq.get_queue("default").enqueue_many(jobs)
+
+        self.message_user(request, 'Pending tasks were added back to queue')
+        return HttpResponseRedirectToReferrer(request)
 
 
 class AssignmentAdmin(admin.ModelAdmin):

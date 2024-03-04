@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     "django.forms",
     "django_rq",
     "django_bootstrap5",
+    "admin_extra_buttons",
     "apps.core",
     "apps.web",
     "apps.api",

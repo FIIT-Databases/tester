@@ -346,6 +346,21 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-admin-extra-buttons"
+version = "1.5.7"
+description = "Django mixin to easily add buttons to any ModelAdmin"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-admin-extra-buttons-1.5.7.tar.gz", hash = "sha256:08dd070cbd46dfe1cb46d7676495a943860e68f99bac85ab5b164cbeb5e73dae"},
+]
+
+[package.extras]
+dev = ["autopep8", "bump2version", "check-manifest", "django", "flake8", "isort", "pep8", "pip-tools", "readme", "sphinx", "wheel"]
+docs = ["markdown-include", "mdx_gh_links", "mkdocs", "mkdocs-material", "mkdocs-material"]
+test = ["coverage", "django_webtest", "factory-boy", "pdbpp", "pyquery", "pytest", "pytest-cov", "pytest-django", "pytest-echo", "tox (>=2.3)", "wheel"]
+
+[[package]]
 name = "django-api-forms"
 version = "1.0.0rc9"
 description = "Declarative Django request validation for RESTful APIs"
@@ -918,4 +933,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "4e2091ca957a389f8e2a904c94b002307413676871fda14a45640d804dc89c83"
+content-hash = "048f4dc846419cd7f6f2ed3560387def9dfb4aede789ef03e555b26f0d87741f"

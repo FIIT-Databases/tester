@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from rq import Queue
 
 from apps.core.jobs import basic_job
 from apps.core.models.assignment import Assignment
@@ -37,6 +38,7 @@ class Evaluation(BaseModel):
 @receiver(post_save, sender=Evaluation)
 def execute_tasks(sender, instance: Evaluation, created: bool, **kwargs):
     if created:
+        jobs = []
         with open(instance.links.path, "r", newline="") as csvfile:
             reader = csv.DictReader(csvfile, delimiter=",")
             for row in reader:
@@ -48,7 +50,10 @@ def execute_tasks(sender, instance: Evaluation, created: bool, **kwargs):
                     additional_information=row,
                 )
                 instance.tasks.add(task)
-                django_rq.enqueue(basic_job, task_id=task.pk, public_only=False)
+                jobs.append(
+                    Queue.prepare_data(basic_job, (task.pk, False, ))
+                )
+        django_rq.get_queue("default").enqueue_many(jobs)
 
 
 __all__ = ["Evaluation"]

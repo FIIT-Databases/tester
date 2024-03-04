@@ -1,7 +1,9 @@
 # Changelog
 
-## 1.11.2 : 2023-03-04
+## 1.12.0 : 2023-03-04
 
+- **Added**: `Recreate queue` in the administration
+- **Changed**: Use `enqueue_many` in `Evaluation`
 - **Fixed**: Evaluation reports compatible with new
 
 ## 1.11.1 : 2024-02-25
