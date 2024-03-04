@@ -48,7 +48,7 @@ def execute_tasks(sender, instance: Evaluation, created: bool, **kwargs):
                     additional_information=row,
                 )
                 instance.tasks.add(task)
-                django_rq.enqueue(basic_job, task.pk, False)
+                django_rq.enqueue(basic_job, task_id=task.pk, public_only=False)
 
 
 __all__ = ["Evaluation"]

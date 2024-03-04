@@ -28,10 +28,11 @@ class EvaluationResult(LoginRequiredMixin, View):
 
         for task in evaluation.tasks.all():
             item = {
-                "email": task.additional_information.get("email"),
-                "name": task.additional_information.get("name"),
-                "surname": task.additional_information.get("surname"),
-                "seminar": task.additional_information.get("seminar"),
+                "timestamp": task.additional_information.get("Časová pečiatka"),
+                "email": task.additional_information.get("E-mailová adresa"),
+                "name": task.additional_information.get("Meno"),
+                "surname": task.additional_information.get("Priezvisko"),
+                "seminar": task.additional_information.get("Cvicenie"),
                 "url": f"{settings.BASE_URL}{task.get_absolute_url()}",
                 "status": task.status,
                 "image": task.image,

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.11.2 : 2023-03-04
+
+- **Fixed**: Evaluation reports compatible with new
+
 ## 1.11.1 : 2024-02-25
 
 - **Fixed**: [Validate Docker image path #6](https://github.com/FIIT-Databases/tester/issues/6)
