@@ -45,23 +45,28 @@ class BasicJob:
     def prepare(self):
         # Create temporary user
         with connection.cursor() as cursor:
-            cursor.execute(f"CREATE USER {self._database_name} WITH CREATEDB ENCRYPTED PASSWORD '{self._database_password}';")
+            cursor.execute(
+                f"CREATE USER {self._database_name} WITH CREATEDB ENCRYPTED PASSWORD '{self._database_password}';"
+            )
             cursor.execute(f"GRANT {self._database_name} TO {settings.DATABASES['default']['USER']};")
             cursor.execute(f"CREATE DATABASE {self._database_name} OWNER {self._database_name};")
             connection.commit()
 
         # Recover database
-        command = [
-            settings.PSQL_PATH,
-            self._database_name
-        ]
+        command = [settings.PSQL_PATH, self._database_name]
 
         with open(f"{settings.DBS_DATABASES_PATH}/{self._task.assigment.database}.sql") as f:
-            proc = subprocess.Popen(" ".join(command), shell=True, stdin=f, stdout=subprocess.DEVNULL, env={
-                'PGPASSWORD': self._database_password,
-                'PGUSER': self._database_name,
-                'PGHOST': settings.DATABASES["default"]["HOST"]
-            })
+            proc = subprocess.Popen(
+                " ".join(command),
+                shell=True,
+                stdin=f,
+                stdout=subprocess.DEVNULL,
+                env={
+                    "PGPASSWORD": self._database_password,
+                    "PGUSER": self._database_name,
+                    "PGHOST": settings.DATABASES["default"]["HOST"],
+                },
+            )
             proc.wait()
 
     def run(self):
