@@ -52,20 +52,17 @@ class BasicJob:
 
         # Recover database
         command = [
-            settings.PG_RESTORE_PATH,
-            f"{settings.DBS_DATABASES_PATH}/{self._task.assigment.database}.backup",
-            f"--dbname={self._database_name}",
-            "--format=custom",
-            "--no-owner",
-            "--no-privileges",
-            "--no-comments",
+            settings.PSQL_PATH,
+            self._database_name
         ]
-        proc = subprocess.Popen(" ".join(command), shell=True, env={
-            'PGPASSWORD': self._database_password,
-            'PGUSER': self._database_name,
-            'PGHOST': settings.DATABASES["default"]["HOST"]
-        })
-        proc.wait()
+
+        with open(f"{settings.DBS_DATABASES_PATH}/{self._task.assigment.database}.sql") as f:
+            proc = subprocess.Popen(" ".join(command), shell=True, stdin=f, stdout=subprocess.DEVNULL, env={
+                'PGPASSWORD': self._database_password,
+                'PGUSER': self._database_name,
+                'PGHOST': settings.DATABASES["default"]["HOST"]
+            })
+            proc.wait()
 
     def run(self):
         client = docker.from_env()

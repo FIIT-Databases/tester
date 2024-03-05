@@ -4,7 +4,7 @@
 
 - **Added**: `Recreate queue` in the administration
 - **Added**: Pre-populate assignment in `TaskForm`
-- **Change**: Job prepare user `pg_restore`
+- **Change**: Job prepare database with `psql`
 - **Changed**: Use `enqueue_many` in `Evaluation`
 - **Fixed**: Evaluation reports compatible with new
 

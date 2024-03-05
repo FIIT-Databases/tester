@@ -186,7 +186,7 @@ RQ_QUEUES = {
         "PORT": int(os.getenv("REDIS_PORT", 6379)),
         "DB": int(os.getenv("RQ_REDIS_DB", 0)),
         "PASSWORD": os.getenv("REDIS_PASSWORD", None),
-        "DEFAULT_TIMEOUT": 360,
+        "DEFAULT_TIMEOUT": 10 * 60,
     }
 }
 
@@ -232,3 +232,4 @@ CSRF_TRUSTED_ORIGINS = [
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
 
 PG_RESTORE_PATH = os.getenv("PG_RESTORE_PATH", "/usr/bin/pg_restore")
+PSQL_PATH = os.getenv("PSQL_PATH", "/usr/bin/psql")
