@@ -221,6 +221,7 @@ CRON_JOBS = {"prune": "*/5 * * * *"}
 PAGINATION_DEFAULT_LIMIT = 10
 
 DBS_TESTER_TIMEOUT = 20
+DBS_DATABASES_PATH = os.getenv("DBS_DATABASES_PATH", "/var/databases")
 DBS_TESTER_DIFF_THRESHOLD = 1024 * 512
 DBS_DOCKER_NETWORK = os.getenv("DBS_DOCKER_NETWORK", "dbs")
 
@@ -229,3 +230,5 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
+
+PG_RESTORE_PATH = os.getenv("PG_RESTORE_PATH", "/usr/bin/pg_restore")

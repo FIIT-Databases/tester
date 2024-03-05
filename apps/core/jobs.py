@@ -3,6 +3,7 @@ import logging
 import os
 import random
 import string
+import subprocess
 from difflib import HtmlDiff
 from json import JSONDecodeError
 from time import sleep
@@ -17,7 +18,7 @@ from django.db import connection
 from django.utils.translation import gettext as _
 from docker.errors import ImageNotFound
 from docker.models.containers import Container
-from requests import HTTPError, Timeout, Session, Request
+from requests import Timeout, Session, Request
 from requests.exceptions import InvalidJSONError
 
 from apps.core.models import Task, TaskRecord
@@ -38,36 +39,33 @@ class BasicJob:
     def __init__(self, task: Task, public_only: bool):
         self._task = task
         self._public_only = public_only
-        self._database_name = "".join(random.choices(string.ascii_letters, k=10)).lower()
+        self._database_name = "dbs_tmp_" + "".join(random.choices(string.ascii_letters, k=10)).lower()
         self._database_password = "".join(random.choices(string.ascii_letters, k=10)).lower()
 
     def prepare(self):
+        # Create temporary user
         with connection.cursor() as cursor:
-            cursor.execute(f"CREATE USER {self._database_name} WITH ENCRYPTED PASSWORD '{self._database_password}';")
+            cursor.execute(f"CREATE USER {self._database_name} WITH CREATEDB ENCRYPTED PASSWORD '{self._database_password}';")
             cursor.execute(f"GRANT {self._database_name} TO {settings.DATABASES['default']['USER']};")
-            cursor.execute(
-                f"CREATE DATABASE {self._database_name} OWNER {self._database_name} "
-                f"TEMPLATE {self._task.assigment.database or 'template0'};"
-            )
-            cursor.execute(f"GRANT ALL PRIVILEGES ON DATABASE {self._database_name} TO {self._database_name};")
+            cursor.execute(f"CREATE DATABASE {self._database_name} OWNER {self._database_name};")
             connection.commit()
 
-        if self._task.assigment.schemas:
-            conn = psycopg.connect(
-                host=settings.DATABASES["default"]["HOST"],
-                dbname=self._database_name,
-                user=settings.DATABASES["default"]["USER"],
-                password=settings.DATABASES["default"]["PASSWORD"],
-                port=settings.DATABASES["default"]["PORT"],
-            )
-
-            with conn.cursor() as cursor:
-                for schema in self._task.assigment.schemas:
-                    cursor.execute(f"ALTER SCHEMA {schema} OWNER TO {self._database_name};")
-                    cursor.execute(f"GRANT SELECT ON ALL TABLES IN SCHEMA {schema} TO {self._database_name};")
-                    cursor.execute(f"GRANT USAGE ON SCHEMA {schema} TO {self._database_name};")
-                conn.commit()
-            conn.close()
+        # Recover database
+        command = [
+            settings.PG_RESTORE_PATH,
+            f"{settings.DBS_DATABASES_PATH}/{self._task.assigment.database}.backup",
+            f"--dbname={self._database_name}",
+            "--format=custom",
+            "--no-owner",
+            "--no-privileges",
+            "--no-comments",
+        ]
+        proc = subprocess.Popen(" ".join(command), shell=True, env={
+            'PGPASSWORD': self._database_password,
+            'PGUSER': self._database_name,
+            'PGHOST': settings.DATABASES["default"]["HOST"]
+        })
+        proc.wait()
 
     def run(self):
         client = docker.from_env()

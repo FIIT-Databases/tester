@@ -8,7 +8,7 @@ from django.views import View
 from django.views.generic import CreateView
 
 from apps.core.jobs import basic_job
-from apps.core.models import Task
+from apps.core.models import Task, Assignment
 from apps.web.forms import TaskForm
 
 
@@ -22,7 +22,17 @@ class CrateTaskView(LoginRequiredMixin, CreateView):
         self.object = None
 
     def get_initial(self):
-        return {"image": self.request.session.pop("task_form", {}).get("image", "")}
+        task_form = self.request.session.pop("task_form", {})
+
+        try:
+            assignment = Assignment.objects.get(pk=task_form.get("assignment"))
+        except Assignment.DoesNotExist:
+            assignment = None
+
+        return {
+            "image": task_form.get("image", ""),
+            "assignment": assignment,
+        }
 
     def form_valid(self, form):
         self.object = form.save(commit=False)

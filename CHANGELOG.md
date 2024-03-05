@@ -1,8 +1,10 @@
 # Changelog
 
-## 1.12.0 : 2024-03-04
+## 1.12.0 : 2024-03-05
 
 - **Added**: `Recreate queue` in the administration
+- **Added**: Pre-populate assignment in `TaskForm`
+- **Change**: Job prepare user `pg_restore`
 - **Changed**: Use `enqueue_many` in `Evaluation`
 - **Fixed**: Evaluation reports compatible with new
 
