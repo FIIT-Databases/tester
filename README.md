@@ -62,7 +62,9 @@ To set up instance with demo database follow these simple steps:
 
 For more information check the `docs` directory.
 
-The key concepts of this software are described in the blog post [How We Built an Application to Test Student Docker Images for a Database Systems University Course](https://dev.to/sibyx/how-we-built-an-application-to-test-student-docker-images-for-database-systems-university-course-372m). This blog post was later extended and presented at [Communication and Information Technologies (KIT) 2023](https://www.kitaos.sk/index.php?conference=kit2023&schedConf=index) with the article [Docker-Based Assignment Evaluations in E-Learning](https://ieeexplore.ieee.org/document/10297093).
+The key concepts of this software are described in the blog post [How We Built an Application to Test Student Docker Images for a Database Systems University Course](https://dev.to/sibyx/how-we-built-an-application-to-test-student-docker-images-for-database-systems-university-course-372m).
+
+This blog post was later extended and presented at [Communication and Information Technologies (KIT) 2023](https://www.kitaos.sk/index.php?conference=kit2023&schedConf=index) with the article [Docker-Based Assignment Evaluations in E-Learning](https://ieeexplore.ieee.org/document/10297093).
 
 ---
 ![](docs/fiit.png)
