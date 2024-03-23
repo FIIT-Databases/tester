@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Dubec
+    given-names: Jakub
+    orcid: https://orcid.org/0000-0003-4248-5264
+  - family-names: Balažia
+  	given-names: Ján
+  - family-names: Bencel
+  	given-names: Rastislav
+  - family-names: Čičák
+  	given-names: Pavel
+title: "Docker-Based Assignment Evaluations in E-Learning"
+version: 1.12.0
+identifiers:
+  - type: doi
+    value: 10.1109/KIT59097.2023.10297093
+date-released: 2023-07-12
