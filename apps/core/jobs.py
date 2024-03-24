@@ -3,7 +3,6 @@ import logging
 import os
 import random
 import string
-import subprocess
 from difflib import HtmlDiff
 from json import JSONDecodeError
 from time import sleep
@@ -95,7 +94,7 @@ class BasicJob:
                 "DATABASE_HOST": settings.DATABASES["default"]["HOST"],
                 # 'DATABASE_HOST': 'docker.for.mac.localhost',
                 "DATABASE_PORT": settings.DATABASES["default"]["PORT"],
-                "DATABASE_NAME": self._database_name,
+                "DATABASE_NAME": self._task.assigment.database,
                 "DATABASE_USER": self._database_name,
                 "DATABASE_PASSWORD": self._database_password,
             },
