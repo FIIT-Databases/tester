@@ -3,6 +3,7 @@
 ## 1.12.1 : 2024-03-24
 
 - **Fixed**: Prune also inactive databases which are standing still for some reason
+- **Changed**: Do not clone database - use the original one with SELECT only access
 
 ## 1.12.0 : 2024-03-05
 
