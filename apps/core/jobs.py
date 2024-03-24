@@ -53,11 +53,11 @@ class BasicJob:
             connection.commit()
 
         conn = psycopg.connect(
-            host=settings.DATABASES['default']['HOST'],
+            host=settings.DATABASES["default"]["HOST"],
             dbname=self._task.assigment.database,
-            user=settings.DATABASES['default']['USER'],
-            password=settings.DATABASES['default']['PASSWORD'],
-            port=settings.DATABASES['default']['PORT']
+            user=settings.DATABASES["default"]["USER"],
+            password=settings.DATABASES["default"]["PASSWORD"],
+            port=settings.DATABASES["default"]["PORT"],
         )
 
         with conn.cursor() as cursor:
