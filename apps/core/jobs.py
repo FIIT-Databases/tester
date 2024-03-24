@@ -49,7 +49,6 @@ class BasicJob:
                 f"CREATE USER {self._database_name} WITH CREATEDB ENCRYPTED PASSWORD '{self._database_password}';"
             )
             cursor.execute(f"GRANT CONNECT ON DATABASE {self._task.assigment.database} TO {self._database_name};")
-            cursor.execute(f"CREATE DATABASE {self._database_name} OWNER {self._database_name};")
             connection.commit()
 
         conn = psycopg.connect(
