@@ -51,9 +51,7 @@ class BasicJob:
             cursor.execute(f"CREATE DATABASE {self._database_name} OWNER {self._database_name};")
             connection.commit()
 
-        self._task.additional_information['database'] = {
-            'name': self._database_name
-        }
+        self._task.additional_information["database"] = {"name": self._database_name}
 
         # Recover database
         command = [settings.PSQL_PATH, self._database_name]
