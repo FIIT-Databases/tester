@@ -38,7 +38,7 @@ class Task(BaseModel):
     message = models.TextField(null=True, editable=False)
     output = models.TextField(null=True, editable=False)
     note = models.TextField(null=True)
-    additional_information = models.JSONField(null=True)
+    additional_information = models.JSONField(default=dict)
 
     def get_absolute_url(self):
         return reverse("task-detail", kwargs={"task_id": self.pk})

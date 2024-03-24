@@ -47,8 +47,8 @@ def execute_tasks(sender, instance: Evaluation, created: bool, **kwargs):
                     assigment=instance.assignment,
                     executor=Task.Executor.EVALUATION,
                     image=row["Link"],
-                    additional_information=row,
                 )
+                task.additional_information['evaluation'] = row
                 instance.tasks.add(task)
                 jobs.append(
                     Queue.prepare_data(

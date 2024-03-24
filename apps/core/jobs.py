@@ -11,7 +11,6 @@ from typing import Optional
 from uuid import UUID
 
 import docker
-import psycopg
 import sentry_sdk
 from django.conf import settings
 from django.db import connection
@@ -51,6 +50,10 @@ class BasicJob:
             cursor.execute(f"GRANT {self._database_name} TO {settings.DATABASES['default']['USER']};")
             cursor.execute(f"CREATE DATABASE {self._database_name} OWNER {self._database_name};")
             connection.commit()
+
+        self._task.additional_information['database'] = {
+            'name': self._database_name
+        }
 
         # Recover database
         command = [settings.PSQL_PATH, self._database_name]
@@ -197,6 +200,7 @@ class BasicJob:
         with connection.cursor() as cursor:
             cursor.execute(f"DROP DATABASE {self._database_name};")
             cursor.execute(f"DROP USER {self._database_name};")
+            connection.commit()
 
     @staticmethod
     def execute(task_id: UUID, public_only: bool) -> Optional[Task]:

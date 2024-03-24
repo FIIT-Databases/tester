@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.12.1 : 2024-03-24
+
+- **Fixed**: Prune also inactive databases which are standing still for some reason
+
 ## 1.12.0 : 2024-03-05
 
 - **Added**: `Recreate queue` in the administration
