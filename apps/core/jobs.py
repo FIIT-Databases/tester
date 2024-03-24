@@ -11,6 +11,7 @@ from typing import Optional
 from uuid import UUID
 
 import docker
+import psycopg
 import sentry_sdk
 from django.conf import settings
 from django.db import connection
@@ -47,28 +48,42 @@ class BasicJob:
             cursor.execute(
                 f"CREATE USER {self._database_name} WITH CREATEDB ENCRYPTED PASSWORD '{self._database_password}';"
             )
-            cursor.execute(f"GRANT {self._database_name} TO {settings.DATABASES['default']['USER']};")
+            cursor.execute(f"GRANT CONNECT ON DATABASE {self._task.assigment.database} TO {self._database_name};")
             cursor.execute(f"CREATE DATABASE {self._database_name} OWNER {self._database_name};")
             connection.commit()
+
+        conn = psycopg.connect(
+            host=settings.DATABASES['default']['HOST'],
+            dbname=self._task.assigment.database,
+            user=settings.DATABASES['default']['USER'],
+            password=settings.DATABASES['default']['PASSWORD'],
+            port=settings.DATABASES['default']['PORT']
+        )
+
+        with conn.cursor() as cursor:
+            cursor.execute(f"GRANT USAGE ON SCHEMA public TO {self._database_name};")
+            cursor.execute(f"GRANT SELECT ON ALL TABLES IN SCHEMA public TO {self._database_name};")
+            conn.commit()
+        conn.close()
 
         self._task.additional_information["database"] = {"name": self._database_name}
 
         # Recover database
-        command = [settings.PSQL_PATH, self._database_name]
+        # command = [settings.PSQL_PATH, self._database_name]
 
-        with open(f"{settings.DBS_DATABASES_PATH}/{self._task.assigment.database}.sql") as f:
-            proc = subprocess.Popen(
-                " ".join(command),
-                shell=True,
-                stdin=f,
-                stdout=subprocess.DEVNULL,
-                env={
-                    "PGPASSWORD": self._database_password,
-                    "PGUSER": self._database_name,
-                    "PGHOST": settings.DATABASES["default"]["HOST"],
-                },
-            )
-            proc.wait()
+        # with open(f"{settings.DBS_DATABASES_PATH}/{self._task.assigment.database}.sql") as f:
+        #     proc = subprocess.Popen(
+        #         " ".join(command),
+        #         shell=True,
+        #         stdin=f,
+        #         stdout=subprocess.DEVNULL,
+        #         env={
+        #             "PGPASSWORD": self._database_password,
+        #             "PGUSER": self._database_name,
+        #             "PGHOST": settings.DATABASES["default"]["HOST"],
+        #         },
+        #     )
+        #     proc.wait()
 
     def run(self):
         client = docker.from_env()
@@ -196,8 +211,8 @@ class BasicJob:
 
     def cleanup(self):
         with connection.cursor() as cursor:
-            cursor.execute(f"DROP DATABASE {self._database_name};")
-            cursor.execute(f"DROP USER {self._database_name};")
+            cursor.execute(f"DROP DATABASE IF EXISTS {self._database_name};")
+            cursor.execute(f"DROP USER IF EXISTS {self._database_name};")
             connection.commit()
 
     @staticmethod
